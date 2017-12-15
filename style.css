@@ -1,0 +1,40 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #202028;
+}
+
+#tetris {
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+    margin: 20px 0;
+    border: solid .2em #fff;
+}
+
+#score, #controls {
+    position: absolute;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 900;
+    font-size: 40px;
+    top: 50%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+}
+
+#score:before {
+    content: 'Score:';
+}
+
+#controls {
+    left: 75%;
+    font-size: 20px;
+    font-weight: 300;
+    transform: translate(0, -50%);
+}
