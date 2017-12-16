@@ -1,0 +1,18 @@
+{
+  "name": "Tetris.js",
+  "version": "0.0.1",
+  "main": "main.js",
+  "description": "Tetris.js is a decent but cool clone of the retro game classic Tetris",
+  "scripts": {
+    "start": "electron main.js",
+    "package": "asar pack Tetris.js-win32-x64/resources/app Tetris.js-win32-x64/resources/app.asar",
+    "build": "electron-packager . Tetris.js"
+  },
+  "author": "KingOfDog",
+  "license": "MIT",
+  "devDependencies": {
+    "asar": "^0.14.0",
+    "electron": "^1.7.9",
+    "electron-packager": "^10.1.0"
+  }
+}

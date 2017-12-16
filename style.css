@@ -23,17 +23,18 @@ body {
     font-weight: 900;
     font-size: 40px;
     top: 50%;
-    left: 25%;
+    right: 75%;
     transform: translate(-50%, -50%);
     color: #fff;
 }
 
 #score:before {
-    content: 'Score:';
+    content: 'Score: ';
 }
 
 #controls {
     left: 75%;
+    right: 0;
     font-size: 20px;
     font-weight: 300;
     transform: translate(0, -50%);
