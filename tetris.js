@@ -227,19 +227,48 @@ const player = {
     score: 0
 };
 
+const keys = {
+    down: {
+        keys: [40, 83],
+        action: () => playerDrop()
+    },
+    left: {
+        keys: [37, 65],
+        action: () => playerMove(-1)
+    },
+    right: {
+        keys: [39, 68],
+        action: () => playerMove(1)
+    },
+    rotateLeft: {
+        keys: [81],
+        action: () => playerRotate(-1)
+    },
+    rotateRight: {
+        keys: [69],
+        action: () => playerRotate(1)
+    }
+};
+
 // Keyboard controls
 document.addEventListener('keydown', event => {
-    if(event.keyCode === 37) {
-        playerMove(-1);
-    } else if(event.keyCode === 39) {
-        playerMove(1);
-    } else if(event.keyCode === 40) {
-        playerDrop();
-    } else if(event.keyCode === 81) {
-        playerRotate(-1);
-    } else if(event.keyCode === 87) {
-        playerRotate(1);
-    }
+    Object.keys(keys).map((objKey, index) => {
+        const keyBind = keys[objKey];
+        if(keyBind.keys.includes(event.keyCode)) {
+            keyBind.action();
+        }
+    });
+    // if(event.keyCode === 37) {
+    //     playerMove(-1);
+    // } else if(event.keyCode === 39) {
+    //     playerMove(1);
+    // } else if(event.keyCode === 40) {
+    //     playerDrop();
+    // } else if(event.keyCode === 81) {
+    //     playerRotate(-1);
+    // } else if(event.keyCode === 87) {
+    //     playerRotate(1);
+    // }
 });
 
 window.onresize = function (event) {
