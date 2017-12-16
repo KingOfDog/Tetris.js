@@ -13,8 +13,6 @@ function createWindow () {
         slashes: true
     }));
 
-    win.openDevTools();
-
     win.on('closed', () => {
         win = null
     })
