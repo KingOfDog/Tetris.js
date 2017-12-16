@@ -12,3 +12,16 @@ My clone of this game principle is made up by one HTML5 file containing a canvas
 
 ## Setup
 Tetris.js is very intuitive and easy to set up. Just download the repository or the most recent release of this project and extract the downloaded file into a new folder. Now you just have to start the index.html-file or the TetrisJS.exe of the release version.
+
+## ToDo
+Currently, Tetris.js is a very minimalistic game with the smallest possible amount of features. There are many things I want to implement into the game in the future. A few of them are listed here:
+* Highscore saving
+* Cooler graphics of the tiles
+  * Multiple themes?
+* Show the grid of the little blocks
+* Display the upcoming tile(s)
+* Hold one tile and swap them with the current one
+* Better layout of texts
+* Multi-language support
+* Better controls (WASD + Arrow keys for moving?, Q+E for rotating?, F for swapping with the currently holded tile?)
+* much more...
