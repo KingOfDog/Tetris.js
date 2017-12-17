@@ -3,6 +3,57 @@ body {
     padding: 0;
     overflow: hidden;
     background: #202028;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-size: 40px;
+    color: #fff;
+}
+
+#language-selector {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.lang {
+    display: inline;
+    margin-left: 10px;
+    border-radius: 2px;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.lang.active {
+    background-color: #3877FF;
+}
+
+#game-title {
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -25%);
+}
+
+#game-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 100px;
+    font-size: 30px;
+    box-shadow: none;
+    color: #ffff;
+    background: #3877FF;
+    border: 0;
+    border-radius: 0;
+    transition: box-shadow .2s;
+    cursor: pointer;
+}
+
+#game-play:hover, #game-play:active, #game-play:focus {
+    outline: none;
+    box-shadow: 3px 4px 0 3px rgba(0,0,0,0.2);
 }
 
 #tetris {
@@ -19,13 +70,10 @@ body {
 
 #score, #controls {
     position: absolute;
-    font-family: Roboto, Helvetica, Arial, sans-serif;
     font-weight: 900;
-    font-size: 40px;
     top: 50%;
     right: 75%;
     transform: translate(-50%, -50%);
-    color: #fff;
 }
 
 #score:before {

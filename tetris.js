@@ -3,6 +3,8 @@ const context = canvas.getContext('2d');
 
 const fieldSize = {x: 12, y: 20};
 
+
+
 function arenaSweep() {
     let rowCount = 1;
     outer: for(let y = arena.length - 1; y > 0; --y) {
@@ -258,30 +260,10 @@ document.addEventListener('keydown', event => {
             keyBind.action();
         }
     });
-    // if(event.keyCode === 37) {
-    //     playerMove(-1);
-    // } else if(event.keyCode === 39) {
-    //     playerMove(1);
-    // } else if(event.keyCode === 40) {
-    //     playerDrop();
-    // } else if(event.keyCode === 81) {
-    //     playerRotate(-1);
-    // } else if(event.keyCode === 87) {
-    //     playerRotate(1);
-    // }
 });
 
-window.onresize = function (event) {
-    scaleWindow();
-};
-
-function scaleWindow() {
-    canvas.height = window.innerHeight - 40;
-    canvas.width = canvas.height / (5 / 3);
-    context.scale(canvas.width / fieldSize.x, canvas.height / fieldSize.y);
+function startGame() {
+    playerReset();
+    update();
+    updateScore();
 }
-
-scaleWindow();
-playerReset();
-update();
-updateScore();
