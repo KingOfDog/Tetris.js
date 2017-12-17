@@ -25,7 +25,9 @@ document.addEventListener("keydown", (event) => {
             }
         }
     } else if(event.keyCode === 27) {
-        toggleMenu();
+        if(!firstRun) {
+            toggleMenu();
+        }
     }
 });
 
@@ -39,7 +41,7 @@ document.getElementById("game-play").addEventListener("click", () => {
 
 document.getElementById("game-reset").addEventListener("click", () => {
     firstRun = true;
-    clearArena();
+    clearScreen();
     hideMenu();
     switchLang(currentLang);
     showMenu();
@@ -55,6 +57,7 @@ function toggleMenu() {
 
 function showMenu() {
     isPaused = true;
+    document.getElementById("background").classList.add("blurred");
     document.getElementById("game-title").style.display = "block";
     document.getElementById("game-play").style.display = "block";
     if(!firstRun) {
@@ -64,6 +67,7 @@ function showMenu() {
 
 function hideMenu() {
     isPaused = false;
+    document.getElementById("background").classList.remove("blurred");
     document.getElementById("game-title").style.display = "none";
     document.getElementById("game-play").style.display = "none";
     document.getElementById("game-reset").style.display = "none";

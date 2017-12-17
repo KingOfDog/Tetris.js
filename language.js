@@ -10,7 +10,8 @@ const en = {
     score: "Score: ",
     paused: "Paused",
     resume: "Resume",
-    title: "Tetris.js"
+    title: "Tetris.js",
+    reset: "Reset"
 };
 
 const de = {
@@ -24,7 +25,8 @@ const de = {
     play: "Spielen!",
     score: "Punkte: ",
     paused: "Pausiert",
-    resume: "Weiterspielen"
+    resume: "Weiterspielen",
+    reset: "Zurücksetzen"
 };
 
 let currentLang = "en";
@@ -59,6 +61,7 @@ function switchLang(lang) {
     } else {
         document.getElementById("game-title").innerHTML = l.getStr("paused");
         document.getElementById("game-play").innerHTML = l.getStr("resume");
+        document.getElementById("game-reset").innerHTML = l.getStr("reset");
     }
     switchActiveSelector(currentLang)
 }

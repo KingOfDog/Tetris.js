@@ -6,18 +6,27 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <defs>
+        <filter id="f1" x="0" y="0">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="15"/>
+        </filter>
+    </defs>
+</svg>
 <div id="language-selector">
     <div id="lang-en" class="lang active" data-lang="en">English</div>
     <div id="lang-de" class="lang" data-lang="de">Deutsch</div>
 </div>
-<div id="score" data-prefix="Score: ">0</div>
-<div id="container">
+<div id="background" class="blurred">
+    <div id="score" data-prefix="Score: ">0</div>
     <canvas id="tetris" width="240" height="400"></canvas>
+    <div id="controls"></div>
+</div>
+<div id="container">
     <h1 id="game-title">Tetris.js</h1>
     <button id="game-play">Play!</button>
     <button id="game-reset">Reset</button>
 </div>
-<div id="controls"></div>
 <script src="language.js"></script>
 <script src="tetris.js"></script>
 <script src="menu.js"></script>
