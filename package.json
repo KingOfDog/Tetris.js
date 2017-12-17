@@ -1,6 +1,6 @@
 {
   "name": "Tetris.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "main.js",
   "description": "Tetris.js is a decent but cool clone of the retro game classic Tetris",
   "scripts": {

@@ -33,7 +33,7 @@ const de = {
     reset: "Zurücksetzen"
 };
 
-let currentLang = "en";
+let currentLang = ["de", "en"].includes(navigator.language || navigator.userLanguage) ? navigator.language || navigator.userLanguage : "en";
 let firstRun = true;
 
 class Language {

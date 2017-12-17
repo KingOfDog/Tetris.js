@@ -55,22 +55,55 @@ function toggleMenu() {
     }
 }
 
+function fadeBlurIn() {
+    const blurEl = document.getElementById("f1").children[0];
+    const finalVal = 15;
+    let currentVal = 0;
+
+    const id = setInterval(frame, 1);
+    function frame() {
+        if(currentVal >= finalVal) {
+            clearInterval(id);
+        } else {
+            currentVal += 0.1;
+            blurEl.setAttribute("stdDeviation", currentVal);
+        }
+    }
+}
+
+function fadeBlurOut() {
+    const blurEl = document.getElementById("f1").children[0];
+    const finalVal = 0;
+    let currentVal = 15;
+
+    const id = setInterval(frame, 1);
+    function frame() {
+        if(currentVal <= finalVal) {
+            clearInterval(id);
+        } else {
+            currentVal -= 0.1;
+            blurEl.setAttribute("stdDeviation", currentVal);
+        }
+    }
+}
+
 function showMenu() {
     isPaused = true;
-    document.getElementById("background").classList.add("blurred");
-    document.getElementById("game-title").style.display = "block";
-    document.getElementById("game-play").style.display = "block";
+    document.getElementById("game-title").style.opacity = "1";
+    document.getElementById("game-play").style.opacity = "1";
+    fadeBlurIn();
     if(!firstRun) {
-        document.getElementById("game-reset").style.display = "block";
+        document.getElementById("game-reset").style.opacity = "1";
     }
 }
 
 function hideMenu() {
     isPaused = false;
-    document.getElementById("background").classList.remove("blurred");
-    document.getElementById("game-title").style.display = "none";
-    document.getElementById("game-play").style.display = "none";
-    document.getElementById("game-reset").style.display = "none";
+    // document.getElementById("background").classList.remove("blurred");
+    document.getElementById("game-title").style.opacity = "0";
+    document.getElementById("game-play").style.opacity = "0";
+    document.getElementById("game-reset").style.opacity = "0";
+    fadeBlurOut();
     if(!firstRun) {
         update(lastTime);
     }
