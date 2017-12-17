@@ -22,6 +22,7 @@ Currently, Tetris.js is a very minimalistic game with the smallest possible amou
 * Display the upcoming tile(s)
 * Hold one tile and swap them with the current one
 * Better layout of texts
-* Multi-language support
-* Better controls (WASD + Arrow keys for moving?, Q+E for rotating?, F for swapping with the currently holded tile?)
+* ~Title screen~
+* ~Multi-language support~
+* ~Better controls (WASD + Arrow keys for moving?, Q+E for rotating?, F for swapping with the currently holded tile?)~
 * much more...
