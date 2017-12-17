@@ -5,7 +5,12 @@ const en = {
     "<br>" +
     "Q/E -> Rotate the tile" +
     "<br>" +
-    "Down/S -> Drop the tile faster"
+    "Down/S -> Drop the tile faster",
+    play: "Play!",
+    score: "Score: ",
+    paused: "Paused",
+    resume: "Resume",
+    title: "Tetris.js"
 };
 
 const de = {
@@ -15,8 +20,15 @@ const de = {
     "<br>" +
     "Q/E -> Objekt drehen" +
     "<br>" +
-    "Unten/S -> Objekt schneller fallen lassen"
+    "Unten/S -> Objekt schneller fallen lassen",
+    play: "Spielen!",
+    score: "Punkte: ",
+    paused: "Pausiert",
+    resume: "Weiterspielen"
 };
+
+let currentLang = "en";
+let firstRun = true;
 
 class Language {
 
@@ -37,9 +49,18 @@ class Language {
 }
 
 function switchLang(lang) {
-    const l = new Language(lang);
+    currentLang = lang;
+    const l = new Language(currentLang);
+    document.getElementById("score").setAttribute("data-prefix", l.getStr("score"));
     document.getElementById("controls").innerHTML = l.getStr("controls");
-    switchActiveSelector(lang)
+    if(firstRun) {
+        document.getElementById("game-title").innerHTML = l.getStr("title");
+        document.getElementById("game-play").innerHTML = l.getStr("play");
+    } else {
+        document.getElementById("game-title").innerHTML = l.getStr("paused");
+        document.getElementById("game-play").innerHTML = l.getStr("resume");
+    }
+    switchActiveSelector(currentLang)
 }
 
 function switchActiveSelector(newSelector) {
@@ -52,7 +73,7 @@ function switchActiveSelector(newSelector) {
     document.getElementById("lang-" + newSelector).classList.add("active");
 }
 
-switchLang("en");
+switchLang(currentLang);
 
 const langSelectors = document.getElementsByClassName("lang");
 

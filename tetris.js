@@ -3,13 +3,17 @@ const context = canvas.getContext('2d');
 
 const fieldSize = {x: 12, y: 20};
 
+let isPaused = true;
 
+function clearArena() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+}
 
 function arenaSweep() {
     let rowCount = 1;
-    outer: for(let y = arena.length - 1; y > 0; --y) {
-        for(let x = 0; x < arena[y].length; ++x) {
-            if(arena[y][x] === 0) {
+    outer: for (let y = arena.length - 1; y > 0; --y) {
+        for (let x = 0; x < arena[y].length; ++x) {
+            if (arena[y][x] === 0) {
                 continue outer;
             }
         }
@@ -27,9 +31,9 @@ function arenaSweep() {
 
 function collide(arena, player) {
     const [m, o] = [player.matrix, player.pos];
-    for(let y = 0; y < m.length; ++y) {
-        for(let x = 0; x < m[y].length; ++x) {
-            if(m[y][x] !== 0 && (arena[y + o.y] && arena[y + o.y][x + o.x]) !== 0) {
+    for (let y = 0; y < m.length; ++y) {
+        for (let x = 0; x < m[y].length; ++x) {
+            if (m[y][x] !== 0 && (arena[y + o.y] && arena[y + o.y][x + o.x]) !== 0) {
                 return true;
             }
         }
@@ -39,14 +43,14 @@ function collide(arena, player) {
 
 function createMatrix(w, h) {
     const matrix = [];
-    while(h--) {
+    while (h--) {
         matrix.push(new Array(w).fill(0));
     }
     return matrix;
 }
 
 function createPiece(type) {
-    switch(type) {
+    switch (type) {
         case 'T':
             return [
                 [0, 0, 0],
@@ -114,7 +118,7 @@ function drawMatrix(matrix, offset) {
 function merge(arena, player) {
     player.matrix.forEach((row, y) => {
         row.forEach((value, x) => {
-            if(value !== 0) {
+            if (value !== 0) {
                 arena[y + player.pos.y][x + player.pos.x] = value;
             }
         });
@@ -123,7 +127,7 @@ function merge(arena, player) {
 
 function playerDrop() {
     player.pos.y++;
-    if(collide(arena, player)) {
+    if (collide(arena, player)) {
         player.pos.y--;
         merge(arena, player);
         playerReset();
@@ -135,7 +139,7 @@ function playerDrop() {
 
 function playerMove(dir) {
     player.pos.x += dir;
-    if(collide(arena, player)) {
+    if (collide(arena, player)) {
         player.pos.x -= dir;
     }
 }
@@ -145,7 +149,7 @@ function playerReset() {
     player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
     player.pos.y = 0;
     player.pos.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
-    if(collide(arena, player)) {
+    if (collide(arena, player)) {
         arena.forEach(row => row.fill(0));
         player.score = 0;
         dropInterval = 1000;
@@ -158,10 +162,10 @@ function playerRotate(dir) {
 
     const pos = player.pos.x;
     let offset = 1;
-    while(collide(arena, player )) {
+    while (collide(arena, player)) {
         player.pos.x += offset;
         offset = -(offset + (offset > 0 ? 1 : -1));
-        if(offset > player.matrix[0].length) {
+        if (offset > player.matrix[0].length) {
             rotate(player.matrix, -dir);
             player.pos.x = pos;
             return;
@@ -170,8 +174,8 @@ function playerRotate(dir) {
 }
 
 function rotate(matrix, dir) {
-    for(let y = 0; y < matrix.length; ++y) {
-        for(let x = 0; x < y; ++x) {
+    for (let y = 0; y < matrix.length; ++y) {
+        for (let x = 0; x < y; ++x) {
             [
                 matrix[x][y],
                 matrix[y][x]
@@ -182,7 +186,7 @@ function rotate(matrix, dir) {
         }
     }
 
-    if(dir > 0) {
+    if (dir > 0) {
         matrix.forEach(row => row.reverse());
     } else {
         matrix.reverse();
@@ -193,17 +197,20 @@ let dropCounter = 0;
 let dropInterval = 1000;
 
 let lastTime = 0;
+
 function update(time = 0) {
-    const deltaTime = time - lastTime;
-    lastTime = time;
+    if(!isPaused) {
+        const deltaTime = time - lastTime;
+        lastTime = time;
 
-    dropCounter += deltaTime;
-    if(dropCounter > dropInterval) {
-        playerDrop();
+        dropCounter += deltaTime;
+        if (dropCounter > dropInterval) {
+            playerDrop();
+        }
+
+        draw();
+        requestAnimationFrame(update);
     }
-
-    draw();
-    requestAnimationFrame(update);
 }
 
 function updateScore() {
@@ -256,7 +263,7 @@ const keys = {
 document.addEventListener('keydown', event => {
     Object.keys(keys).map((objKey, index) => {
         const keyBind = keys[objKey];
-        if(keyBind.keys.includes(event.keyCode)) {
+        if (keyBind.keys.includes(event.keyCode)) {
             keyBind.action();
         }
     });
