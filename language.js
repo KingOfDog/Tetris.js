@@ -5,7 +5,9 @@ const en = {
     "<br>" +
     "Q/E -> Rotate the tile" +
     "<br>" +
-    "Down/S -> Drop the tile faster",
+    "Down/S -> Drop the tile faster" +
+    "<br>" +
+    "Space/Esc -> Pause the game",
     play: "Play!",
     score: "Score: ",
     paused: "Paused",
@@ -21,7 +23,9 @@ const de = {
     "<br>" +
     "Q/E -> Objekt drehen" +
     "<br>" +
-    "Unten/S -> Objekt schneller fallen lassen",
+    "Unten/S -> Objekt schneller fallen lassen" +
+    "<br>" +
+    "Leertaste/Esc -> Pausiere das Spiel",
     play: "Spielen!",
     score: "Punkte: ",
     paused: "Pausiert",
