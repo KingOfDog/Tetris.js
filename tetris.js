@@ -5,7 +5,7 @@ const fieldSize = {x: 12, y: 20};
 
 let isPaused = true;
 
-function clearArena() {
+function clearScreen() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
@@ -228,7 +228,7 @@ const colors = [
     '#3877FF',
 ];
 
-const arena = createMatrix(fieldSize.x, fieldSize.y);
+let arena = createMatrix(fieldSize.x, fieldSize.y);
 
 const player = {
     pos: {x: 0, y: 0},
@@ -270,6 +270,7 @@ document.addEventListener('keydown', event => {
 });
 
 function startGame() {
+    arena = createMatrix(fieldSize.x, fieldSize.y)
     playerReset();
     update();
     updateScore();
