@@ -5,6 +5,8 @@ const fieldSize = {x: 12, y: 20};
 
 let isPaused = true;
 
+let startTime = 0;
+
 function clearScreen() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -198,6 +200,8 @@ let dropInterval = 1000;
 
 let lastTime = 0;
 
+const timeEl = document.getElementById("time");
+
 function update(time = 0) {
     if(!isPaused) {
         const deltaTime = time - lastTime;
@@ -208,12 +212,24 @@ function update(time = 0) {
             playerDrop();
         }
 
+        timeEl.innerHTML = formatMillis(Date.now() - startTime);
+
         draw();
         requestAnimationFrame(update);
     }
 }
 
+function formatMillis(millis) {
+    const d = new Date(1000*Math.round(millis / 1000));
+    return (d.getUTCMinutes() < 10 ? "0" : "") + d.getUTCMinutes() + ":" + (d.getUTCSeconds() < 10 ? "0" : "") + d.getUTCSeconds();
+}
+
+let lastScore = 0;
 function updateScore() {
+    if(lastScore !== player.score) {
+        scoreUpdateAni();
+        lastScore = player.score;
+    }
     document.getElementById('score').innerText = player.score.toString();
 }
 
@@ -274,4 +290,5 @@ function startGame() {
     playerReset();
     update();
     updateScore();
+    startTime = Date.now();
 }

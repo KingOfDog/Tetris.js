@@ -87,6 +87,30 @@ function fadeBlurOut() {
     }
 }
 
+function scoreUpdateAni() {
+    const scoreEl = document.getElementById("score");
+    const nativeTransform = "translate(-50%, -50%)";
+
+    const scale = 1.5;
+    const finalScale = 1;
+    let currentScale = 1;
+    let upscaling = true;
+
+    const id = setInterval(frame, 5);
+    function frame() {
+        if(currentScale <= scale && upscaling) {
+            currentScale += 0.02;
+            scoreEl.style.transform = nativeTransform + " scale(" + currentScale + ")";
+        } else if (currentScale >= finalScale) {
+            upscaling = false;
+            currentScale -= 0.02;
+            scoreEl.style.transform = nativeTransform + " scale(" + currentScale + ")";
+        } else {
+            clearInterval(id);
+        }
+    }
+}
+
 function showMenu() {
     isPaused = true;
     document.getElementById("game-title").style.opacity = "1";
