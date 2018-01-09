@@ -112,3 +112,39 @@ body {
     font-weight: 300;
     transform: translate(0, -50%);
 }
+
+#footer {
+    position: absolute;
+    bottom: 10px;
+    width: 95%;
+    left: 2.5%;
+    right: 2.5%;
+    font-size: 12px;
+    color: rgba(255, 255, 255, .5);
+}
+
+#version-author {
+    display: inline-block;
+}
+
+#corner-buttons {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+}
+
+#corner-buttons > a {
+    text-decoration: none;
+    display: inline-block;
+    left: 10px;
+    color: rgba(255, 255, 255, .5);
+    -webkit-transition: color .2s;
+    -moz-transition: color .2s;
+    -ms-transition: color .2s;
+    -o-transition: color .2s;
+    transition: color .2s;
+}
+
+#corner-buttons > a:hover, #corner-buttons > a:active {
+    color: rgba(255, 255, 255, 1);
+}
