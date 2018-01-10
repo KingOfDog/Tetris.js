@@ -127,6 +127,7 @@ function hideMenu() {
     document.getElementById("game-title").style.opacity = "0";
     document.getElementById("game-play").style.opacity = "0";
     document.getElementById("game-reset").style.opacity = "0";
+    lastTimeUpdate = Date.now();
     fadeBlurOut();
     if(!firstRun) {
         update(lastTime);

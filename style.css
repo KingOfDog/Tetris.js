@@ -148,3 +148,8 @@ body {
 #corner-buttons > a:hover, #corner-buttons > a:active {
     color: rgba(255, 255, 255, 1);
 }
+
+#time {
+    margin-top: 5px;
+    margin-left: 10px;
+}

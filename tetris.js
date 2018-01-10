@@ -2,14 +2,12 @@ const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
 
 const fieldSize = {x: 12, y: 20};
+const tileGap = .05;
 
 let isPaused = true;
 
 let startTime = 0;
-
-function clearScreen() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-}
+let prevUpdateScore = 0;
 
 function arenaSweep() {
     let rowCount = 1;
@@ -27,8 +25,15 @@ function arenaSweep() {
         player.score += rowCount * 10;
         rowCount *= 2;
     }
-    dropInterval -= player.score / 10;
-    dropInterval = dropInterval > 50 ? dropInterval : 50;
+    if (player.score - prevUpdateScore > 50) {
+        dropInterval -= -20;
+        dropInterval = dropInterval > 100 ? dropInterval : 100;
+        prevUpdateScore = player.score;
+    }
+}
+
+function clearScreen() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function collide(arena, player) {
@@ -111,10 +116,20 @@ function drawMatrix(matrix, offset) {
         row.forEach((value, x) => {
             if (value !== 0) {
                 context.fillStyle = colors[value];
-                context.fillRect(x + offset.x, y + offset.y, 1, 1);
+                context.fillRect(x + offset.x + tileGap / 2, y + offset.y + tileGap / 2, 1 - tileGap, 1 - tileGap);
             }
         });
     });
+}
+
+function gameOver() {
+    arena.forEach(row => row.fill(0));
+    passedTime = 0;
+    lastTimeUpdate = Date.now();
+    updateTime();
+    player.score = 0;
+    dropInterval = 1000;
+    updateScore();
 }
 
 function merge(arena, player) {
@@ -144,6 +159,7 @@ function playerMove(dir) {
     if (collide(arena, player)) {
         player.pos.x -= dir;
     }
+    dropCounter *= .75;
 }
 
 function playerReset() {
@@ -151,11 +167,9 @@ function playerReset() {
     player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
     player.pos.y = 0;
     player.pos.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
+
     if (collide(arena, player)) {
-        arena.forEach(row => row.fill(0));
-        player.score = 0;
-        dropInterval = 1000;
-        updateScore();
+        gameOver();
     }
 }
 
@@ -200,8 +214,6 @@ let dropInterval = 1000;
 
 let lastTime = 0;
 
-const timeEl = document.getElementById("time");
-
 function update(time = 0) {
     if(!isPaused) {
         const deltaTime = time - lastTime;
@@ -212,7 +224,7 @@ function update(time = 0) {
             playerDrop();
         }
 
-        timeEl.innerHTML = formatMillis(Date.now() - startTime);
+        updateTime();
 
         draw();
         requestAnimationFrame(update);
@@ -231,6 +243,16 @@ function updateScore() {
         lastScore = player.score;
     }
     document.getElementById('score').innerText = player.score.toString();
+}
+
+const timeEl = document.getElementById("time");
+let passedTime = 0;
+let lastTimeUpdate = Date.now();
+
+function updateTime() {
+    passedTime += Date.now() - lastTimeUpdate;
+    timeEl.innerHTML = formatMillis(passedTime);
+    lastTimeUpdate = Date.now();
 }
 
 const colors = [
