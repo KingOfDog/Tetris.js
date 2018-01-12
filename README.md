@@ -18,13 +18,15 @@ Currently, Tetris.js is a very minimalistic game with the smallest possible amou
 * Highscore saving
 * Cooler graphics of the tiles
   * Multiple themes?
-* Show the grid of the little blocks
 * Display the upcoming tile(s)
 * Hold one tile and swap them with the current one
 * Better layout of texts
+* Mobile optimization
+* Detect slow hardware to optimize performance
 * ~Title screen~
 * ~Multi-language support~
 * ~Better controls (WASD + Arrow keys for moving?, Q+E for rotating?, F for swapping with the currently holded tile?)~
 * ~Pause the game~
 * ~Menu to reset a running game~
+* ~Show the grid of the little blocks~
 * much more...
