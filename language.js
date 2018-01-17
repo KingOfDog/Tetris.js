@@ -58,7 +58,7 @@ function switchLang(lang) {
     currentLang = lang;
     const l = new Language(currentLang);
     document.getElementById("score").setAttribute("data-prefix", l.getStr("score"));
-    document.getElementById("controls").innerHTML = l.getStr("controls");
+    document.getElementById("control-text").innerHTML = l.getStr("controls");
     if(firstRun) {
         document.getElementById("game-title").innerHTML = l.getStr("title");
         document.getElementById("game-play").innerHTML = l.getStr("play");

@@ -87,10 +87,9 @@ function fadeBlurOut() {
     }
 }
 
+const scoreEl = document.getElementById("score");
+const nativeTransform = getComputedStyle(scoreEl).transform;
 function scoreUpdateAni() {
-    const scoreEl = document.getElementById("score");
-    const nativeTransform = "translate(-50%, -50%)";
-
     const scale = 1.5;
     const finalScale = 1;
     let currentScale = 1;
