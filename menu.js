@@ -69,6 +69,14 @@ function fadeBlurIn() {
             blurEl.setAttribute("stdDeviation", currentVal);
         }
     }
+
+    setTimeout(() => {
+        blurEl.setAttribute("stdDeviation", finalVal);
+        clearInterval(id);
+        if (currentVal < finalVal) {
+            console.log("Performance Issues: system couldn't hold up");
+        }
+    }, 1000);
 }
 
 function fadeBlurOut() {
@@ -85,6 +93,14 @@ function fadeBlurOut() {
             blurEl.setAttribute("stdDeviation", currentVal);
         }
     }
+
+    setTimeout(() => {
+        blurEl.setAttribute("stdDeviation", finalVal);
+        clearInterval(id);
+        if (currentVal < finalVal) {
+            console.log("Performance Issues: system couldn't hold up");
+        }
+    }, 1000);
 }
 
 const scoreEl = document.getElementById("score");

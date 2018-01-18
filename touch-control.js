@@ -8,7 +8,7 @@ hammertime.on('swiperight', () => {
     keys.right.action();
 });
 
-hammertime.on('swipe', (e) => {
+hammertime.on('pandown', (e) => {
     console.log(e.direction);
     keys.down.action();
 });
