@@ -308,7 +308,7 @@ document.addEventListener('keydown', event => {
 });
 
 function startGame() {
-    arena = createMatrix(fieldSize.x, fieldSize.y)
+    arena = createMatrix(fieldSize.x, fieldSize.y);
     playerReset();
     update();
     updateScore();
