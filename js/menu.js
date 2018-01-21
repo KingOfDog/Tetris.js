@@ -52,6 +52,21 @@ document.getElementById("game-reset").addEventListener("click", () => {
     showMenu();
 });
 
+let isActive = false;
+const menuButton = document.getElementById("menu-opener");
+
+menuButton.addEventListener("click", () => {
+    if (isActive) {
+        menuButton.classList.remove('active');
+        document.getElementsByTagName('body')[0].classList.remove('menu-open');
+    } else {
+        menuButton.classList.add('active');
+        document.getElementsByTagName('body')[0].classList.add('menu-open');
+    }
+
+    isActive = !isActive;
+});
+
 function toggleMenu() {
     if(!isPaused){
         showMenu();

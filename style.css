@@ -160,6 +160,88 @@ body {
     color: rgba(255, 255, 255, 1);
 }
 
+#menu-opener {
+    display: none;
+}
+
+.menu {
+    -webkit-transition: 0.1s -webkit-transform linear;
+    transition: 0.1s -webkit-transform linear;
+    transition: 0.1s transform linear;
+    transition: 0.1s transform linear, 0.1s -webkit-transform linear;
+    position: absolute;
+    background: 0;
+    float: left;
+    height: 2.7rem;
+    width: 3.5rem;
+    z-index: 1;
+    outline: 0;
+    padding: 0;
+    border: 0;
+    -webkit-transform: scale(.5);
+    -moz-transform: scale(.5);
+    -ms-transform: scale(.5);
+    -o-transform: scale(.5);
+    transform: scale(.5);
+}
+
+.bar, .bar::before, .bar::after {
+    -webkit-transition: 0.2s background linear 0.1s, 0.2s top linear 0.2s, 0.2s -webkit-transform linear;
+    transition: 0.2s background linear 0.1s, 0.2s top linear 0.2s, 0.2s -webkit-transform linear;
+    transition: 0.2s background linear 0.1s, 0.2s top linear 0.2s, 0.2s transform linear;
+    transition: 0.2s background linear 0.1s, 0.2s top linear 0.2s, 0.2s transform linear, 0.2s -webkit-transform linear;
+    position: absolute;
+    background: #fff;
+    margin: auto;
+    width: 100%;
+    height: 0.3rem;
+    content: '';
+    top: 50%;
+    left: 0;
+}
+
+.bar {
+    margin-top: -0.2rem;
+}
+
+.bar::before {
+    top: -1.2rem;
+}
+
+.bar::after {
+    top: 1.2rem;
+}
+
+.bar::before, .bar::after {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+
+.active .bar {
+    background: 0;
+}
+
+.active .bar::before {
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.active .bar::after {
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.active .bar::before, .active .bar::after {
+    top: 0;
+}
+
+.active .bar, .active .bar::before, .active .bar::after {
+    -webkit-transition: 0.2s background linear 0.1s, 0.2s top linear, 0.2s -webkit-transform linear 0.2s;
+    transition: 0.2s background linear 0.1s, 0.2s top linear, 0.2s -webkit-transform linear 0.2s;
+    transition: 0.2s background linear 0.1s, 0.2s top linear, 0.2s transform linear 0.2s;
+    transition: 0.2s background linear 0.1s, 0.2s top linear, 0.2s transform linear 0.2s, 0.2s -webkit-transform linear 0.2s;
+}
+
 @media (max-width: 1400px) {
     #tetris, #tetris-background {
         height: 75%;
@@ -194,5 +276,48 @@ body {
 
     #language-selector {
         font-size: 20px;
+    }
+}
+
+@media (max-width: 840px) {
+    #game-stats {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    #game-stats > div {
+        margin-right: 0;
+        display: block;
+    }
+
+    #control-text {
+        font-size: 14px;
+    }
+
+    #menu {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .75);
+        transform: translateX(-100%);
+        -webkit-transition: transform .5s;
+        -moz-transition: transform .5s;
+        -ms-transition: transform .5s;
+        -o-transition: transform .5s;
+        transition: transform .5s;
+        z-index: 100;
+        top: 0;
+    }
+
+    .menu-open #menu {
+        transform: none;
+    }
+
+    #menu-opener {
+        position: absolute;
+        display: block;
+        left: 10px;
+        top: 10px;
+        z-index: 101;
     }
 }

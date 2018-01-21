@@ -1,15 +1,15 @@
 const hammertime = new Hammer(document.getElementById("tetris"));
 
-hammertime.on('swipeleft', () => {
+hammertime.on('swipeleft', (e) => {
     keys.left.action();
 });
 
-hammertime.on('swiperight', () => {
+hammertime.on('swiperight', (e) => {
     keys.right.action();
 });
 
-hammertime.on('pandown', (e) => {
-    console.log(e.direction);
+hammertime.on('pandown swipedown', (e) => {
+    console.log(e);
     keys.down.action();
 });
 
