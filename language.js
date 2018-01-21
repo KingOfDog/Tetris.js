@@ -9,6 +9,7 @@ const en = {
     "<br>" +
     "Space/Esc -> Pause the game",
     play: "Play!",
+    time: "Time: ",
     score: "Score: ",
     paused: "Paused",
     resume: "Resume",
@@ -27,6 +28,7 @@ const de = {
     "<br>" +
     "Leertaste/Esc -> Pausiere das Spiel",
     play: "Spielen!",
+    time: "Zeit: ",
     score: "Punkte: ",
     paused: "Pausiert",
     resume: "Weiterspielen",
@@ -58,6 +60,7 @@ function switchLang(lang) {
     currentLang = lang;
     const l = new Language(currentLang);
     document.getElementById("score").setAttribute("data-prefix", l.getStr("score"));
+    document.getElementById("time").setAttribute("data-prefix", l.getStr("time"));
     document.getElementById("control-text").innerHTML = l.getStr("controls");
     if(firstRun) {
         document.getElementById("game-title").innerHTML = l.getStr("title");
