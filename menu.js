@@ -133,6 +133,10 @@ function scoreUpdateAni() {
 
 function showMenu() {
     isPaused = true;
+    document.getElementById("game-title").style.display = "block";
+    document.getElementById("game-play").style.display = "block";
+    document.getElementById("game-reset").style.display = "block";
+
     document.getElementById("game-title").style.opacity = "1";
     document.getElementById("game-play").style.opacity = "1";
     fadeBlurIn();
@@ -143,10 +147,14 @@ function showMenu() {
 
 function hideMenu() {
     isPaused = false;
-    // document.getElementById("background").classList.remove("blurred");
     document.getElementById("game-title").style.opacity = "0";
     document.getElementById("game-play").style.opacity = "0";
     document.getElementById("game-reset").style.opacity = "0";
+    setTimeout(() => {
+        document.getElementById("game-title").style.display = "none";
+        document.getElementById("game-play").style.display = "none";
+        document.getElementById("game-reset").style.display = "none";
+    }, 500);
     lastTimeUpdate = Date.now();
     fadeBlurOut();
     if(!firstRun) {
