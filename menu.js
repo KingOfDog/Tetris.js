@@ -3,9 +3,14 @@ window.onresize = () => {
 };
 
 function scaleWindow() {
+    bgCanvas.height = window.innerHeight - 40;
+    bgCanvas.width = bgCanvas.height / (5 / 3);
+    bgContext.scale(bgCanvas.width / fieldSize.x, bgCanvas.height / fieldSize.y);
+
     canvas.height = window.innerHeight - 40;
     canvas.width = canvas.height / (5 / 3);
     context.scale(canvas.width / fieldSize.x, canvas.height / fieldSize.y);
+
     if(!firstRun && isPaused) {
         draw();
     }
@@ -60,20 +65,20 @@ function fadeBlurIn() {
     const finalVal = 15;
     let currentVal = 0;
 
-    const id = setInterval(frame, 1);
+    const id = setInterval(frame, 16);
     function frame() {
         if(currentVal >= finalVal) {
             clearInterval(id);
         } else {
-            currentVal += 0.1;
+            currentVal += 1.6;
             blurEl.setAttribute("stdDeviation", currentVal);
         }
     }
 
     setTimeout(() => {
-        blurEl.setAttribute("stdDeviation", finalVal);
-        clearInterval(id);
         if (currentVal < finalVal) {
+            blurEl.setAttribute("stdDeviation", finalVal);
+            clearInterval(id);
             console.log("Performance Issues: system couldn't hold up");
         }
     }, 1000);
@@ -84,12 +89,12 @@ function fadeBlurOut() {
     const finalVal = 0;
     let currentVal = 15;
 
-    const id = setInterval(frame, 1);
+    const id = setInterval(frame, 16);
     function frame() {
         if(currentVal <= finalVal) {
             clearInterval(id);
         } else {
-            currentVal -= 0.1;
+            currentVal -= 1.6;
             blurEl.setAttribute("stdDeviation", currentVal);
         }
     }
@@ -154,4 +159,5 @@ function initGame() {
     startGame();
     firstRun = false;
     switchLang(currentLang);
+
 }

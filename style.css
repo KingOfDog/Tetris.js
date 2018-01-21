@@ -74,14 +74,14 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    filter: none;
+    filter: url(#f2);
 }
 
 #background.blurred {
     filter: url(#f1);
 }
 
-#tetris {
+#tetris, #tetris-background {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -91,6 +91,13 @@ body {
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     border: solid .2em #fff;
+    z-index: 1;
+    background: transparent;
+}
+
+#tetris-background {
+    border: none;
+    z-index: 0;
 }
 
 #score, #controls {
@@ -155,7 +162,7 @@ body {
 }
 
 @media (max-width: 1400px) {
-    #tetris {
+    #tetris, #tetris-background {
         height: 75%;
     }
 

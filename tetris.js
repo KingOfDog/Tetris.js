@@ -1,13 +1,32 @@
 const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
 
+const bgCanvas = document.getElementById('tetris-background');
+const bgContext = bgCanvas.getContext('2d');
+
 const fieldSize = {x: 12, y: 20};
 const tileGap = .05;
+
+/*
+default -> plain squares
+retro -> original look
+modern -> rounded corners
+snake -> all tiles are connected
+ */
+let theme = 'default';
 
 let isPaused = true;
 
 let startTime = 0;
 let prevUpdateScore = 0;
+
+if (typeof console === "undefined") {
+    console = {};
+}
+
+let prerenders = [];
+const prerenderWidth = canvas.width / fieldSize.x * 4;
+const prerenderHeight = canvas.height / fieldSize.y * 4;
 
 function arenaSweep() {
     let rowCount = 1;
@@ -26,10 +45,11 @@ function arenaSweep() {
         rowCount *= 2;
     }
     if (player.score - prevUpdateScore > 50) {
-        dropInterval -= -20;
+        dropInterval -= 20;
         dropInterval = dropInterval > 100 ? dropInterval : 100;
         prevUpdateScore = player.score;
     }
+    drawArena();
 }
 
 function clearScreen() {
@@ -104,22 +124,120 @@ function createPiece(type) {
 }
 
 function draw() {
-    context.fillStyle = '#000';
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    // bgContext.fillStyle = '#000';
+    // bgContext.fillRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    // clearScreen();
 
-    drawMatrix(arena, {x: 0, y: 0});
+    // drawMatrix(arena, {x: 0, y: 0}, true);
     drawMatrix(player.matrix, player.pos);
 }
 
-function drawMatrix(matrix, offset) {
+function drawArena() {
+    bgContext.fillStyle = '#000';
+    bgContext.fillRect(0, 0, canvas.width, canvas.height);
+    drawMatrix(arena, {x: 0, y: 0}, true);
+}
+
+function drawMatrix(matrix, offset, isBg) {
     matrix.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value !== 0) {
-                context.fillStyle = colors[value];
-                context.fillRect(x + offset.x + tileGap / 2, y + offset.y + tileGap / 2, 1 - tileGap, 1 - tileGap);
+                drawTile(x, y, offset, colors[value], matrix, isBg);
             }
         });
     });
+}
+
+function drawRoundRect(ctx, x, y, w, h, r) {
+    let r1 = r,
+        r2 = r,
+        r3 = r,
+        r4 = r;
+    if (typeof r === "number") {
+        if (w < 2 * r) r = w / 2;
+        if (h < 2 * r) r = h / 2;
+    } else {
+        r.forEach((corner, index) => {
+            if (w < 2 * r[index]) r[index] = w / 2;
+            if (h < 2 * r[index]) r[index] = h / 2;
+        });
+        r1 = r[0];
+        r2 = r[1];
+        r3 = r[2];
+        r4 = r[3];
+    }
+    ctx.beginPath();
+    ctx.moveTo(x + r1, y);
+    if (r1 > 0) {
+        ctx.arcTo(x + w, y, x + w, y + h, r1);
+    } else {
+        ctx.lineTo(x + w, y);
+    }
+    if (r2 > 0) {
+        ctx.arcTo(x + w, y + h, x, y + h, r2);
+    } else {
+        ctx.lineTo(x + w, y + h);
+    }
+    if (r3 > 0) {
+        ctx.arcTo(x, y + h, x, y, r3);
+    } else {
+        ctx.lineTo(x, y + h);
+    }
+    if (r4 > 0) {
+        ctx.arcTo(x, y, x + w, y, r4);
+    } else {
+        ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fill();
+}
+
+function drawTile(x, y, offset, color, matrix, isBg) {
+    let ctx = context;
+    if (isBg) {
+        ctx = bgContext;
+    }
+    switch (theme) {
+        case "default":
+            ctx.fillStyle = color;
+            ctx.fillRect(x + offset.x + tileGap / 2, y + offset.y + tileGap / 2, 1 - tileGap, 1 - tileGap);
+            break;
+        case "modern":
+            ctx.fillStyle = color;
+            drawRoundRect(ctx, x + offset.x + tileGap / 2, y + offset.y + tileGap / 2, 1 - tileGap, 1 - tileGap, .15);
+            break;
+        case "snakes":
+            ctx.fillStyle = color;
+            let r1 = .15, // top right
+                r2 = .15, // bottom right
+                r3 = .15, // bottom left
+                r4 = .15; // top left
+            // Is there a tile to the left?
+            if (matrix[y][x - 1] > 0) {
+                r3 = 0;
+                r4 = 0;
+            }
+            // Is there a tile to the right?
+            if (matrix[y][x + 1] > 0) {
+                r1 = 0;
+                r2 = 0;
+            }
+            // Is there a tile to the top?
+            if (matrix[y - 1] !== undefined && matrix[y - 1][x] > 0) {
+                r1 = 0;
+                r4 = 0;
+            }
+            // Is there a tile to the bottom?
+            if (matrix[y + 1] !== undefined && matrix[y + 1][x] > 0) {
+                r2 = 0;
+                r3 = 0;
+            }
+            drawRoundRect(ctx, x + offset.x, y + offset.y, 1, 1, [r1, r2, r3, r4]);
+            break;
+        default:
+            break;
+    }
 }
 
 function gameOver() {
@@ -132,6 +250,33 @@ function gameOver() {
     updateScore();
 }
 
+function getCookie(name) {
+    if (document.cookie === "") {
+        return;
+    }
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+        let biscuit = (cookies[i]).split("=");
+        if (biscuit[0] === name)
+            return {name: biscuit[0], value: biscuit[1]};
+    }
+}
+
+function getCookies() {
+    if (document.cookie === "") {
+        return;
+    }
+    const cookies = document.cookie.split(";");
+    const cookieList = [];
+    for (let i = 0; i < cookies.length; i++) {
+        let biscuit = (cookies[i]).split("=");
+        cookieList.push({
+            name: biscuit[0],
+            value: biscuit[1]
+        });
+    }
+}
+
 function merge(arena, player) {
     player.matrix.forEach((row, y) => {
         row.forEach((value, x) => {
@@ -140,6 +285,7 @@ function merge(arena, player) {
             }
         });
     });
+    drawArena();
 }
 
 function playerDrop() {
@@ -189,6 +335,29 @@ function playerRotate(dir) {
     }
 }
 
+function prerenderPiece(type, preContext) {
+    createPiece(type).forEach((row, y) => {
+        row.forEach((value, x) => {
+            if (value !== 0) {
+                preContext.fillStyle = colors[value];
+                preContext.fillRect(x + tileGap / 2, y + tileGap / 2, 1 - tileGap, 1 - tileGap);
+            }
+        });
+    });
+}
+
+function prerenderPieces() {
+    const preCanvas = document.createElement('canvas');
+    preCanvas.width = prerenderWidth;
+    preCanvas.height = prerenderHeight;
+    const preContext = preCanvas.getContext("2d");
+    prerenderPiece("I", preContext);
+    prerenders.push({
+        canvas: preCanvas,
+        context: preContext
+    });
+}
+
 function rotate(matrix, dir) {
     for (let y = 0; y < matrix.length; ++y) {
         for (let x = 0; x < y; ++x) {
@@ -206,6 +375,12 @@ function rotate(matrix, dir) {
         matrix.forEach(row => row.reverse());
     } else {
         matrix.reverse();
+    }
+}
+
+function saveHighscore() {
+    if (getCookie("highscore").value < player.score) {
+        document.cookie = "highscore=" + player.score + "; max-age=" + 60 * 60 * 24 * 365 * 1000 + "; path=/;";
     }
 }
 
@@ -241,6 +416,7 @@ function updateScore() {
     if(lastScore !== player.score) {
         scoreUpdateAni();
         lastScore = player.score;
+        saveHighscore();
     }
     document.getElementById('score').innerText = player.score.toString();
 }
@@ -309,6 +485,7 @@ document.addEventListener('keydown', event => {
 
 function startGame() {
     arena = createMatrix(fieldSize.x, fieldSize.y);
+    drawArena();
     playerReset();
     update();
     updateScore();
