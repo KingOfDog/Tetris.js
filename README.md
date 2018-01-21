@@ -19,6 +19,10 @@ Currently, Tetris.js is a very minimalistic game with the smallest possible amou
 * Hold one tile and swap them with the current one
 * Mobile optimization
 * Detect slow hardware to optimize performance
+* Distribute content of tetris.js to multiple classes
+* Multiplayer (network connection)
+* Display highscore
+* Global highscore ranking
 * ~Cooler graphics of the tiles~
 * ~Multiple themes?~
 * ~Improve performance~
