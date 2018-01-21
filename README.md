@@ -15,14 +15,14 @@ Tetris.js is very intuitive and easy to set up. Just download the repository or 
 
 ## ToDo
 Currently, Tetris.js is a very minimalistic game with the smallest possible amount of features. There are many things I want to implement into the game in the future. A few of them are listed here:
-* Highscore saving
 * Cooler graphics of the tiles
-  * Multiple themes?
+* Multiple themes?
 * Display the upcoming tile(s)
 * Hold one tile and swap them with the current one
-* Better layout of texts
 * Mobile optimization
 * Detect slow hardware to optimize performance
+* ~Better layout of texts~
+* ~Highscore saving~
 * ~Title screen~
 * ~Multi-language support~
 * ~Better controls (WASD + Arrow keys for moving?, Q+E for rotating?, F for swapping with the currently holded tile?)~
