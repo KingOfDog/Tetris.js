@@ -20,6 +20,12 @@ let isPaused = true;
 let startTime = 0;
 let prevUpdateScore = 0;
 
+const pieces = 'IJLOSTZ';
+
+let upcomingTiles = [];
+let holdingTile = null;
+let alreadyHolding = false;
+
 if (typeof console === "undefined") {
     console = {};
 }
@@ -27,6 +33,10 @@ if (typeof console === "undefined") {
 let prerenders = [];
 const prerenderWidth = canvas.width / fieldSize.x * 4;
 const prerenderHeight = canvas.height / fieldSize.y * 4;
+
+function addTile() {
+    upcomingTiles.push(createPiece(pieces[pieces.length * Math.random() | 0]));
+}
 
 function arenaSweep() {
     let rowCount = 1;
@@ -300,6 +310,18 @@ function playerDrop() {
     dropCounter = 0;
 }
 
+function playerHold() {
+    if (alreadyHolding)
+        return;
+    if (holdingTile === null) {
+        holdingTile = player.matrix;
+        playerReset(true);
+    } else {
+        holdingTile = [player.matrix, player.matrix = holdingTile][0];
+        playerReset(true, false);
+    }
+}
+
 function playerMove(dir) {
     player.pos.x += dir;
     if (collide(arena, player)) {
@@ -308,9 +330,14 @@ function playerMove(dir) {
     dropCounter *= .75;
 }
 
-function playerReset() {
-    const pieces = 'IJLOSTZ';
-    player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
+function playerReset(resetHold = false, newTile = true) {
+    alreadyHolding = resetHold;
+    if (newTile) {
+        player.matrix = upcomingTiles[0];
+        upcomingTiles.splice(0, 1);
+        addTile();
+    }
+
     player.pos.y = 0;
     player.pos.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
 
@@ -470,6 +497,10 @@ const keys = {
     rotateRight: {
         keys: [69],
         action: () => playerRotate(1)
+    },
+    holdTile: {
+        keys: [38, 87],
+        action: () => playerHold()
     }
 };
 
@@ -486,6 +517,9 @@ document.addEventListener('keydown', event => {
 function startGame() {
     arena = createMatrix(fieldSize.x, fieldSize.y);
     drawArena();
+    addTile();
+    addTile();
+    addTile();
     playerReset();
     update();
     updateScore();
