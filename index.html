@@ -15,12 +15,25 @@
     </defs>
 </svg>
 <div id="menu">
-    <div id="language-selector">
-        <div id="lang-en" class="lang active" data-lang="en">English</div>
-        <div id="lang-de" class="lang" data-lang="de">Deutsch</div>
-    </div>
-    <div id="theme-selector">
-
+    <div id="menu-content">
+        <div id="language-selector">
+            <div id="lang-en" class="lang active" data-lang="en">English</div>
+            <div id="lang-de" class="lang" data-lang="de">Deutsch</div>
+        </div>
+        <div id="theme-selector">
+            <div class="radio">
+                <input id="theme-default" name="theme" type="radio" checked>
+                <label for="theme-default" class="radio-label">Default</label>
+            </div>
+            <div class="radio">
+                <input id="theme-modern" name="theme" type="radio">
+                <label for="theme-modern" class="radio-label">Modern</label>
+            </div>
+            <div class="radio">
+                <input id="theme-snakes" name="theme" type="radio">
+                <label for="theme-snakes" class="radio-label">Snakes</label>
+            </div>
+        </div>
     </div>
 </div>
 <div id="menu-opener">
@@ -33,8 +46,12 @@
         <div id="time">00:00</div>
         <div id="score" data-prefix="Score: ">0</div>
     </div>
-    <canvas id="tetris-background" width="240" height="400"></canvas>
-    <canvas id="tetris" width="240" height="400"></canvas>
+    <div id="canvas-container">
+        <canvas id="tetris-hold" width="100" height="100"></canvas>
+        <canvas id="tetris-background" width="240" height="400"></canvas>
+        <canvas id="tetris" width="240" height="400"></canvas>
+        <canvas id="tetris-upcoming" width="100" height="300"></canvas>
+    </div>
     <div id="controls">
         <div id="control-text"></div>
     </div>

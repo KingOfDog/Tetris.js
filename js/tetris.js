@@ -4,6 +4,12 @@ const context = canvas.getContext('2d');
 const bgCanvas = document.getElementById('tetris-background');
 const bgContext = bgCanvas.getContext('2d');
 
+const holdCanvas = document.getElementById('tetris-hold');
+const holdContext = holdCanvas.getContext('2d');
+
+const upcomingCanvas = document.getElementById('tetris-upcoming');
+const upcomingContext = upcomingCanvas.getContext('2d');
+
 const fieldSize = {x: 12, y: 20};
 const tileGap = .05;
 
@@ -134,26 +140,32 @@ function createPiece(type) {
 }
 
 function draw() {
-    // bgContext.fillStyle = '#000';
-    // bgContext.fillRect(0, 0, canvas.width, canvas.height);
     context.clearRect(0, 0, canvas.width, canvas.height);
-    // clearScreen();
-
-    // drawMatrix(arena, {x: 0, y: 0}, true);
     drawMatrix(player.matrix, player.pos);
 }
 
 function drawArena() {
     bgContext.fillStyle = '#000';
     bgContext.fillRect(0, 0, canvas.width, canvas.height);
-    drawMatrix(arena, {x: 0, y: 0}, true);
+    drawMatrix(arena, {x: 0, y: 0}, bgContext);
 }
 
-function drawMatrix(matrix, offset, isBg) {
+function drawHolding() {
+    holdContext.clearRect(0, 0, holdCanvas.width, holdCanvas.height);
+    console.log(holdingTile, holdingTile.length, holdCanvas.width / (holdingTile.length + 2));
+    // holdContext.scale(holdCanvas.width / (holdingTile.length + 2), holdCanvas.width / (holdingTile.length + 2));
+    const tile = removeEmpty(holdingTile);
+    const x = 3 - (tile[0].length / 2);
+    const y = 3 - (tile.length / 2);
+    console.log(x, y);
+    drawMatrix(tile, {x: x, y: y}, holdContext);
+}
+
+function drawMatrix(matrix, offset, useContext = context) {
     matrix.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value !== 0) {
-                drawTile(x, y, offset, colors[value], matrix, isBg);
+                drawTile(x, y, offset, colors[value], matrix, useContext);
             }
         });
     });
@@ -203,13 +215,12 @@ function drawRoundRect(ctx, x, y, w, h, r) {
     ctx.fill();
 }
 
-function drawTile(x, y, offset, color, matrix, isBg) {
-    let ctx = context;
-    if (isBg) {
-        ctx = bgContext;
-    }
+function drawTile(x, y, offset, color, matrix, useContext = context) {
+    const ctx = useContext;
     switch (theme) {
         case "default":
+            if (ctx === holdContext)
+                console.log(ctx, color, x + offset.x + tileGap / 2, y + offset.y + tileGap / 2, 1 - tileGap, 1 - tileGap);
             ctx.fillStyle = color;
             ctx.fillRect(x + offset.x + tileGap / 2, y + offset.y + tileGap / 2, 1 - tileGap, 1 - tileGap);
             break;
@@ -218,6 +229,7 @@ function drawTile(x, y, offset, color, matrix, isBg) {
             drawRoundRect(ctx, x + offset.x + tileGap / 2, y + offset.y + tileGap / 2, 1 - tileGap, 1 - tileGap, .15);
             break;
         case "snakes":
+            console.log(ctx);
             ctx.fillStyle = color;
             let r1 = .15, // top right
                 r2 = .15, // bottom right
@@ -246,6 +258,8 @@ function drawTile(x, y, offset, color, matrix, isBg) {
             drawRoundRect(ctx, x + offset.x, y + offset.y, 1, 1, [r1, r2, r3, r4]);
             break;
         default:
+            theme = "default";
+            drawTile(x, y, offset, color, matrix, useContext);
             break;
     }
 }
@@ -320,6 +334,7 @@ function playerHold() {
         holdingTile = [player.matrix, player.matrix = holdingTile][0];
         playerReset(true, false);
     }
+    drawHolding();
 }
 
 function playerMove(dir) {
@@ -383,6 +398,34 @@ function prerenderPieces() {
         canvas: preCanvas,
         context: preContext
     });
+}
+
+function removeEmpty(matrix) {
+    const tempMatrix = rotate(matrix, 1);
+    matrix.forEach((row, y) => {
+        let onlyZeroes = true;
+        row.forEach((value, x) => {
+            if (value > 0) {
+                onlyZeroes = false;
+            }
+        });
+        if (onlyZeroes) {
+            matrix.splice(y, 1);
+        }
+    });
+    tempMatrix.forEach((col, x) => {
+        let onlyZeroes = true;
+        col.forEach((value, y) => {
+            if (value > 0) {
+                onlyZeroes = false;
+            }
+        });
+        if (onlyZeroes)
+            matrix.forEach((row, y) => {
+                matrix[y].splice(x, 1);
+            });
+    });
+    return matrix;
 }
 
 function rotate(matrix, dir) {

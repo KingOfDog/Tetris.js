@@ -3,13 +3,25 @@ window.onresize = () => {
 };
 
 function scaleWindow() {
-    bgCanvas.height = window.innerHeight - 40;
-    bgCanvas.width = bgCanvas.height / (5 / 3);
-    bgContext.scale(bgCanvas.width / fieldSize.x, bgCanvas.height / fieldSize.y);
+    const canvasContainer = document.getElementById("canvas-container");
+    const height = window.innerHeight - 40;
+    const width = height / (5 / 3);
 
-    canvas.height = window.innerHeight - 40;
-    canvas.width = canvas.height / (5 / 3);
-    context.scale(canvas.width / fieldSize.x, canvas.height / fieldSize.y);
+    canvasContainer.height = height;
+    canvasContainer.width = width + 200;
+
+    bgCanvas.height = height;
+    bgCanvas.width = width;
+    bgContext.scale(width / fieldSize.x, height / fieldSize.y);
+
+    canvas.height = height;
+    canvas.width = width;
+    context.scale(width / fieldSize.x, height / fieldSize.y);
+
+    holdCanvas.height = height / fieldSize.y * 4;
+    holdCanvas.width = holdCanvas.height;
+    holdCanvas.style.transform = "translateX(-" + ((width / 2) + holdCanvas.height) + "px) translate(-.4em, -.2em)";
+    holdContext.scale(holdCanvas.width / 6, holdCanvas.width / 6);
 
     if(!firstRun && isPaused) {
         draw();
