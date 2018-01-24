@@ -64,6 +64,12 @@ document.getElementById("game-reset").addEventListener("click", () => {
     showMenu();
 });
 
+document.getElementsByName("theme").forEach((el) => {
+    el.addEventListener("change", (e) => {
+        theme = e.target.getAttribute("data-theme");
+    });
+});
+
 let isActive = false;
 const menuButton = document.getElementById("menu-opener");
 
