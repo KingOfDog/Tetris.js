@@ -8,6 +8,10 @@ hammertime.on('swiperight', (e) => {
     keys.right.action();
 });
 
+hammertime.on('swipeup', () => {
+    keys.holdTile.action();
+});
+
 hammertime.on('pandown swipedown', (e) => {
     keys.down.action();
 });

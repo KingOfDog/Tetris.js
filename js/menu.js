@@ -1,3 +1,10 @@
+/*
+0 -> Game
+1 -> Paused
+2 -> Settings
+ */
+let escState = 1;
+
 window.onresize = () => {
     scaleWindow();
 };
@@ -42,9 +49,12 @@ document.addEventListener("keydown", (event) => {
             }
         }
     } else if(event.keyCode === 27) {
-        if(!firstRun) {
-            toggleMenu();
+        escState++;
+        if (firstRun && escState % 3 === 0) {
+            escState++;
         }
+        escState = escState % 3;
+        toggleMenu();
     }
 });
 
@@ -86,10 +96,14 @@ menuButton.addEventListener("click", () => {
 });
 
 function toggleMenu() {
-    if(!isPaused){
+    if (escState === 0) {
+        document.getElementsByTagName("body")[0].classList.remove("menu-open");
+        hideMenu();
+    } else if (escState === 1) {
+        document.getElementsByTagName("body")[0].classList.remove("menu-open");
         showMenu();
     } else {
-        hideMenu();
+        document.getElementsByTagName("body")[0].classList.add("menu-open");
     }
 }
 
@@ -99,6 +113,7 @@ function fadeBlurIn() {
     let currentVal = 0;
 
     const id = setInterval(frame, 16);
+
     function frame() {
         if(currentVal >= finalVal) {
             clearInterval(id);
@@ -123,6 +138,7 @@ function fadeBlurOut() {
     let currentVal = 15;
 
     const id = setInterval(frame, 16);
+
     function frame() {
         if(currentVal <= finalVal) {
             clearInterval(id);
@@ -150,6 +166,7 @@ function scoreUpdateAni() {
     let upscaling = true;
 
     const id = setInterval(frame, 5);
+
     function frame() {
         if(currentScale <= scale && upscaling) {
             currentScale += 0.02;
@@ -166,6 +183,7 @@ function scoreUpdateAni() {
 
 function showMenu() {
     isPaused = true;
+    escState = 1;
     document.getElementById("game-title").style.display = "block";
     document.getElementById("game-play").style.display = "block";
     document.getElementById("game-reset").style.display = "block";
@@ -180,6 +198,7 @@ function showMenu() {
 
 function hideMenu() {
     isPaused = false;
+    escState = 0;
     document.getElementById("game-title").style.opacity = "0";
     document.getElementById("game-play").style.opacity = "0";
     document.getElementById("game-reset").style.opacity = "0";

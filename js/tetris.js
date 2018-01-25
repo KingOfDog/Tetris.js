@@ -69,7 +69,6 @@ function arenaSweep() {
 }
 
 function centerOffset(matrix) {
-    // const tempMatrix = rotate(matrix, 1);
     let offsetX = 0;
     let offsetY = 0;
     matrix.forEach((row, y) => {
@@ -99,18 +98,6 @@ function centerOffset(matrix) {
                 offsetX += .5;
         }
     }
-    // tempMatrix.forEach((col, x) => {
-    //     let onlyZeroes = true;
-    //     col.forEach((value, y) => {
-    //         if (value > 0) {
-    //             onlyZeroes = false;
-    //         }
-    //     });
-    //     if (onlyZeroes)
-    //         matrix.forEach((row, y) => {
-    //             matrix[y].splice(x, 1);
-    //         });
-    // });
     return {x: offsetX, y: offsetY};
 }
 
@@ -262,7 +249,6 @@ function drawTile(x, y, offset, color, matrix, useContext = context) {
     const ctx = useContext;
     switch (theme) {
         case "default":
-            if (ctx === holdContext)
             ctx.fillStyle = color;
             ctx.fillRect(x + offset.x + tileGap / 2, y + offset.y + tileGap / 2, 1 - tileGap, 1 - tileGap);
             break;
