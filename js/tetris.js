@@ -68,6 +68,52 @@ function arenaSweep() {
     drawArena();
 }
 
+function centerOffset(matrix) {
+    // const tempMatrix = rotate(matrix, 1);
+    let offsetX = 0;
+    let offsetY = 0;
+    matrix.forEach((row, y) => {
+        let onlyZeroesY = true;
+        row.forEach((value, x) => {
+            if (value > 0) {
+                onlyZeroesY = false;
+            }
+        });
+        if (onlyZeroesY) {
+            if (y < matrix.length / 2)
+                offsetY -= .5;
+            else
+                offsetY += .5;
+        }
+    });
+    for (let x = 0; x < matrix[0].length; x++) {
+        let onlyZeroesX = true;
+        matrix.forEach((row, y) => {
+            if (row[x] > 0)
+                onlyZeroesX = false;
+        });
+        if (onlyZeroesX) {
+            if (x < matrix[0].length / 2)
+                offsetX -= .5;
+            else
+                offsetX += .5;
+        }
+    }
+    // tempMatrix.forEach((col, x) => {
+    //     let onlyZeroes = true;
+    //     col.forEach((value, y) => {
+    //         if (value > 0) {
+    //             onlyZeroes = false;
+    //         }
+    //     });
+    //     if (onlyZeroes)
+    //         matrix.forEach((row, y) => {
+    //             matrix[y].splice(x, 1);
+    //         });
+    // });
+    return {x: offsetX, y: offsetY};
+}
+
 function clearScreen() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -152,13 +198,10 @@ function drawArena() {
 
 function drawHolding() {
     holdContext.clearRect(0, 0, holdCanvas.width, holdCanvas.height);
-    console.log(holdingTile, holdingTile.length, holdCanvas.width / (holdingTile.length + 2));
-    // holdContext.scale(holdCanvas.width / (holdingTile.length + 2), holdCanvas.width / (holdingTile.length + 2));
-    const tile = removeEmpty(holdingTile);
-    const x = 3 - (tile[0].length / 2);
-    const y = 3 - (tile.length / 2);
-    console.log(x, y);
-    drawMatrix(tile, {x: x, y: y}, holdContext);
+    const offset = centerOffset(holdingTile);
+    const x = 3 - (holdingTile[0].length / 2) + offset.x;
+    const y = 3 - (holdingTile.length / 2) + offset.y;
+    drawMatrix(holdingTile, {x: x, y: y}, holdContext);
 }
 
 function drawMatrix(matrix, offset, useContext = context) {
@@ -220,7 +263,6 @@ function drawTile(x, y, offset, color, matrix, useContext = context) {
     switch (theme) {
         case "default":
             if (ctx === holdContext)
-                console.log(ctx, color, x + offset.x + tileGap / 2, y + offset.y + tileGap / 2, 1 - tileGap, 1 - tileGap);
             ctx.fillStyle = color;
             ctx.fillRect(x + offset.x + tileGap / 2, y + offset.y + tileGap / 2, 1 - tileGap, 1 - tileGap);
             break;
@@ -229,7 +271,6 @@ function drawTile(x, y, offset, color, matrix, useContext = context) {
             drawRoundRect(ctx, x + offset.x + tileGap / 2, y + offset.y + tileGap / 2, 1 - tileGap, 1 - tileGap, .15);
             break;
         case "snakes":
-            console.log(ctx);
             ctx.fillStyle = color;
             let r1 = .15, // top right
                 r2 = .15, // bottom right
@@ -398,34 +439,6 @@ function prerenderPieces() {
         canvas: preCanvas,
         context: preContext
     });
-}
-
-function removeEmpty(matrix) {
-    const tempMatrix = rotate(matrix, 1);
-    matrix.forEach((row, y) => {
-        let onlyZeroes = true;
-        row.forEach((value, x) => {
-            if (value > 0) {
-                onlyZeroes = false;
-            }
-        });
-        if (onlyZeroes) {
-            matrix.splice(y, 1);
-        }
-    });
-    tempMatrix.forEach((col, x) => {
-        let onlyZeroes = true;
-        col.forEach((value, y) => {
-            if (value > 0) {
-                onlyZeroes = false;
-            }
-        });
-        if (onlyZeroes)
-            matrix.forEach((row, y) => {
-                matrix[y].splice(x, 1);
-            });
-    });
-    return matrix;
 }
 
 function rotate(matrix, dir) {
