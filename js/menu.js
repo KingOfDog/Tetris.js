@@ -17,18 +17,18 @@ function scaleWindow() {
     canvasContainer.height = height;
     canvasContainer.width = width + 200;
 
-    bgCanvas.height = height;
-    bgCanvas.width = width;
-    bgContext.scale(width / fieldSize.x, height / fieldSize.y);
+    canvasBg.height = height;
+    canvasBg.width = width;
+    contextBg.scale(width / fieldSize.x, height / fieldSize.y);
 
     canvas.height = height;
     canvas.width = width;
     context.scale(width / fieldSize.x, height / fieldSize.y);
 
-    holdCanvas.height = height / fieldSize.y * 4;
-    holdCanvas.width = holdCanvas.height;
-    holdCanvas.style.transform = "translateX(-" + ((width / 2) + holdCanvas.height) + "px) translate(-.4em, -.2em)";
-    holdContext.scale(holdCanvas.width / 6, holdCanvas.width / 6);
+    canvasHold.height = height / fieldSize.y * 4;
+    canvasHold.width = canvasHold.height;
+    canvasHold.style.transform = "translateX(-" + ((width / 2) + canvasHold.height) + "px) translate(-.4em, -.2em)";
+    contextHold.scale(canvasHold.width / 6, canvasHold.width / 6);
 
     if(!firstRun && isPaused) {
         draw();
@@ -84,26 +84,34 @@ let isActive = false;
 const menuButton = document.getElementById("menu-opener");
 
 menuButton.addEventListener("click", () => {
+    toggleSettings();
+});
+
+function toggleSettings() {
     if (isActive) {
+        escState = 1;
         menuButton.classList.remove('active');
         document.getElementsByTagName('body')[0].classList.remove('menu-open');
     } else {
+        escState = 2;
         menuButton.classList.add('active');
         document.getElementsByTagName('body')[0].classList.add('menu-open');
     }
-
     isActive = !isActive;
-});
+}
 
 function toggleMenu() {
     if (escState === 0) {
         document.getElementsByTagName("body")[0].classList.remove("menu-open");
+        menuButton.classList.remove('active');
         hideMenu();
     } else if (escState === 1) {
         document.getElementsByTagName("body")[0].classList.remove("menu-open");
+        menuButton.classList.remove('active');
         showMenu();
     } else {
         document.getElementsByTagName("body")[0].classList.add("menu-open");
+        menuButton.classList.add('active');
     }
 }
 

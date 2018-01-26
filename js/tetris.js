@@ -1,17 +1,80 @@
+let arena = createMatrix(fieldSize.x, fieldSize.y);
+
 const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
 
-const bgCanvas = document.getElementById('tetris-background');
-const bgContext = bgCanvas.getContext('2d');
+const canvasBg = document.getElementById('tetris-background');
+const contextBg = canvasBg.getContext('2d');
 
-const holdCanvas = document.getElementById('tetris-hold');
-const holdContext = holdCanvas.getContext('2d');
+const canvasHold = document.getElementById('tetris-hold');
+const contextHold = canvasHold.getContext('2d');
 
-const upcomingCanvas = document.getElementById('tetris-upcoming');
-const upcomingContext = upcomingCanvas.getContext('2d');
+const canvasUpcoming = document.getElementById('tetris-upcoming');
+const contextUpcoming = canvasUpcoming.getContext('2d');
+
+const colors = [
+    null,
+    '#FF0D72',
+    '#0DC2FF',
+    '#0DFF72',
+    '#F538FF',
+    '#FF8E0D',
+    '#FFE138',
+    '#3877FF',
+];
+
+let dropCounter = 0;
+let dropInterval = 1000;
 
 const fieldSize = {x: 12, y: 20};
-const tileGap = .05;
+
+let holdingTile = null;
+
+let isPaused = true;
+let isHolding = false;
+
+const keys = {
+    down: {
+        keys: [40, 83],
+        action: () => playerDrop()
+    },
+    left: {
+        keys: [37, 65],
+        action: () => playerMove(-1)
+    },
+    right: {
+        keys: [39, 68],
+        action: () => playerMove(1)
+    },
+    rotateLeft: {
+        keys: [81],
+        action: () => playerRotate(-1)
+    },
+    rotateRight: {
+        keys: [69],
+        action: () => playerRotate(1)
+    },
+    holdTile: {
+        keys: [38, 87],
+        action: () => playerHold()
+    }
+};
+
+let lastScore = 0;
+let lastTime = 0;
+let lastTimeUpdate = Date.now();
+
+const pieces = 'IJLOSTZ';
+
+const player = {
+    pos: {x: 0, y: 0},
+    matrix: null,
+    score: 0
+};
+
+let prevUpdateScore = 0;
+
+let startTime = 0;
 
 /*
 default -> plain squares
@@ -21,24 +84,28 @@ snake -> all tiles are connected
  */
 let theme = 'default';
 
-let isPaused = true;
+const tileGap = .05;
 
-let startTime = 0;
-let prevUpdateScore = 0;
+const timeElement = document.getElementById("time");
+let timePassed = 0;
 
-const pieces = 'IJLOSTZ';
 
 let upcomingTiles = [];
-let holdingTile = null;
-let alreadyHolding = false;
+
 
 if (typeof console === "undefined") {
     console = {};
 }
 
-let prerenders = [];
-const prerenderWidth = canvas.width / fieldSize.x * 4;
-const prerenderHeight = canvas.height / fieldSize.y * 4;
+// Keyboard controls
+document.addEventListener('keydown', event => {
+    Object.keys(keys).map((objKey, index) => {
+        const keyBind = keys[objKey];
+        if (keyBind.keys.includes(event.keyCode)) {
+            keyBind.action();
+        }
+    });
+});
 
 function addTile() {
     upcomingTiles.push(createPiece(pieces[pieces.length * Math.random() | 0]));
@@ -178,17 +245,17 @@ function draw() {
 }
 
 function drawArena() {
-    bgContext.fillStyle = '#000';
-    bgContext.fillRect(0, 0, canvas.width, canvas.height);
-    drawMatrix(arena, {x: 0, y: 0}, bgContext);
+    contextBg.fillStyle = '#000';
+    contextBg.fillRect(0, 0, canvas.width, canvas.height);
+    drawMatrix(arena, {x: 0, y: 0}, contextBg);
 }
 
 function drawHolding() {
-    holdContext.clearRect(0, 0, holdCanvas.width, holdCanvas.height);
+    contextHold.clearRect(0, 0, canvasHold.width, canvasHold.height);
     const offset = centerOffset(holdingTile);
     const x = 3 - (holdingTile[0].length / 2) + offset.x;
     const y = 3 - (holdingTile.length / 2) + offset.y;
-    drawMatrix(holdingTile, {x: x, y: y}, holdContext);
+    drawMatrix(holdingTile, {x: x, y: y}, contextHold);
 }
 
 function drawMatrix(matrix, offset, useContext = context) {
@@ -291,9 +358,14 @@ function drawTile(x, y, offset, color, matrix, useContext = context) {
     }
 }
 
+function formatMillis(millis) {
+    const d = new Date(1000 * Math.round(millis / 1000));
+    return (d.getUTCMinutes() < 10 ? "0" : "") + d.getUTCMinutes() + ":" + (d.getUTCSeconds() < 10 ? "0" : "") + d.getUTCSeconds();
+}
+
 function gameOver() {
     arena.forEach(row => row.fill(0));
-    passedTime = 0;
+    timePassed = 0;
     lastTimeUpdate = Date.now();
     updateTime();
     player.score = 0;
@@ -352,7 +424,7 @@ function playerDrop() {
 }
 
 function playerHold() {
-    if (alreadyHolding)
+    if (isHolding)
         return;
     if (holdingTile === null) {
         holdingTile = player.matrix;
@@ -373,7 +445,7 @@ function playerMove(dir) {
 }
 
 function playerReset(resetHold = false, newTile = true) {
-    alreadyHolding = resetHold;
+    isHolding = resetHold;
     if (newTile) {
         player.matrix = upcomingTiles[0];
         upcomingTiles.splice(0, 1);
@@ -404,29 +476,6 @@ function playerRotate(dir) {
     }
 }
 
-function prerenderPiece(type, preContext) {
-    createPiece(type).forEach((row, y) => {
-        row.forEach((value, x) => {
-            if (value !== 0) {
-                preContext.fillStyle = colors[value];
-                preContext.fillRect(x + tileGap / 2, y + tileGap / 2, 1 - tileGap, 1 - tileGap);
-            }
-        });
-    });
-}
-
-function prerenderPieces() {
-    const preCanvas = document.createElement('canvas');
-    preCanvas.width = prerenderWidth;
-    preCanvas.height = prerenderHeight;
-    const preContext = preCanvas.getContext("2d");
-    prerenderPiece("I", preContext);
-    prerenders.push({
-        canvas: preCanvas,
-        context: preContext
-    });
-}
-
 function rotate(matrix, dir) {
     for (let y = 0; y < matrix.length; ++y) {
         for (let x = 0; x < y; ++x) {
@@ -453,10 +502,17 @@ function saveHighscore() {
     }
 }
 
-let dropCounter = 0;
-let dropInterval = 1000;
-
-let lastTime = 0;
+function startGame() {
+    arena = createMatrix(fieldSize.x, fieldSize.y);
+    drawArena();
+    addTile();
+    addTile();
+    addTile();
+    playerReset();
+    update();
+    updateScore();
+    startTime = Date.now();
+}
 
 function update(time = 0) {
     if(!isPaused) {
@@ -475,12 +531,6 @@ function update(time = 0) {
     }
 }
 
-function formatMillis(millis) {
-    const d = new Date(1000*Math.round(millis / 1000));
-    return (d.getUTCMinutes() < 10 ? "0" : "") + d.getUTCMinutes() + ":" + (d.getUTCSeconds() < 10 ? "0" : "") + d.getUTCSeconds();
-}
-
-let lastScore = 0;
 function updateScore() {
     if(lastScore !== player.score) {
         scoreUpdateAni();
@@ -490,80 +540,8 @@ function updateScore() {
     document.getElementById('score').innerText = player.score.toString();
 }
 
-const timeEl = document.getElementById("time");
-let passedTime = 0;
-let lastTimeUpdate = Date.now();
-
 function updateTime() {
-    passedTime += Date.now() - lastTimeUpdate;
-    timeEl.innerHTML = formatMillis(passedTime);
+    timePassed += Date.now() - lastTimeUpdate;
+    timeElement.innerHTML = formatMillis(timePassed);
     lastTimeUpdate = Date.now();
-}
-
-const colors = [
-    null,
-    '#FF0D72',
-    '#0DC2FF',
-    '#0DFF72',
-    '#F538FF',
-    '#FF8E0D',
-    '#FFE138',
-    '#3877FF',
-];
-
-let arena = createMatrix(fieldSize.x, fieldSize.y);
-
-const player = {
-    pos: {x: 0, y: 0},
-    matrix: null,
-    score: 0
-};
-
-const keys = {
-    down: {
-        keys: [40, 83],
-        action: () => playerDrop()
-    },
-    left: {
-        keys: [37, 65],
-        action: () => playerMove(-1)
-    },
-    right: {
-        keys: [39, 68],
-        action: () => playerMove(1)
-    },
-    rotateLeft: {
-        keys: [81],
-        action: () => playerRotate(-1)
-    },
-    rotateRight: {
-        keys: [69],
-        action: () => playerRotate(1)
-    },
-    holdTile: {
-        keys: [38, 87],
-        action: () => playerHold()
-    }
-};
-
-// Keyboard controls
-document.addEventListener('keydown', event => {
-    Object.keys(keys).map((objKey, index) => {
-        const keyBind = keys[objKey];
-        if (keyBind.keys.includes(event.keyCode)) {
-            keyBind.action();
-        }
-    });
-});
-
-function startGame() {
-    arena = createMatrix(fieldSize.x, fieldSize.y);
-    drawArena();
-    addTile();
-    addTile();
-    addTile();
-    playerReset();
-    update();
-    updateScore();
-    startTime = Date.now();
 }
