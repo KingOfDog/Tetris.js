@@ -127,6 +127,7 @@ body {
     height: 75px;
     font-size: 30px;
     box-shadow: none;
+    -webkit-text-fill-color: #fff;
     color: #ffff !important;
     background: #3877FF !important;
     border: 0 !important;
