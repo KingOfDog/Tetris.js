@@ -1,38 +1,46 @@
 const en = {
-    controls: "Controls:" +
-    "<br>" +
-    "Left+Right/A+D -> Move left/right" +
-    "<br>" +
-    "Q/E -> Rotate the tile" +
-    "<br>" +
-    "Down/S -> Drop the tile faster" +
-    "<br>" +
-    "Space/Esc -> Pause the game",
-    play: "Play!",
-    time: "Time: ",
-    score: "Score: ",
-    paused: "Paused",
-    resume: "Resume",
-    title: "Tetris.js",
-    reset: "Reset"
+    btnPlay: "Play!",
+    btnReset: "Reset",
+    btnResume: "Resume",
+    controlsDown: "Accelerate falling",
+    controlsHold: "Hold",
+    controlsLeft: "Move left",
+    controlsPause: "Pause",
+    controlsRight: "Move right",
+    controlsTLeft: "Rotate to the left",
+    controlsTRight: "Rotate to the right",
+    counterScore: "Score: ",
+    counterTime: "Time: ",
+    themeDefault: "Default",
+    themeModern: "Modern",
+    themeSnakes: "Snakes",
+    titleAppearance: "Appearance",
+    titleControls: "Controls",
+    titleGame: "Tetris.js",
+    titleLanguage: "Language",
+    titlePaused: "Paused"
 };
 
 const de = {
-    controls: "Steuerung:" +
-    "<br>" +
-    "Links+Rechts/A+D -> Objekt nach links/rechts bewegen" +
-    "<br>" +
-    "Q/E -> Objekt drehen" +
-    "<br>" +
-    "Unten/S -> Objekt schneller fallen lassen" +
-    "<br>" +
-    "Leertaste/Esc -> Pausiere das Spiel",
-    play: "Spielen!",
-    time: "Zeit: ",
-    score: "Punkte: ",
-    paused: "Pausiert",
-    resume: "Weiterspielen",
-    reset: "Zurücksetzen"
+    btnPlay: "Spielen!",
+    btnReset: "Zurücksetzen",
+    btnResume: "Weiterspielen",
+    controlsDown: "Fallen beschleunigen",
+    controlsHold: "Halten",
+    controlsLeft: "Nach links bewegen",
+    controlsPause: "Pausieren",
+    controlsRight: "Nach rechts bewegen",
+    controlsTLeft: "Nach links drehen",
+    controlsTRight: "Nach rechts drehen",
+    counterScore: "Punkte: ",
+    counterTime: "Zeit: ",
+    themeDefault: "Standard",
+    themeModern: "Modern",
+    themeSnakes: "Schlangen",
+    titleAppearance: "Aussehen",
+    titleControls: "Steuerung",
+    titleLanguage: "Sprache",
+    titlePaused: "Pausiert"
 };
 
 let currentLang = ["de", "en"].includes(navigator.language || navigator.userLanguage) ? navigator.language || navigator.userLanguage : "en";
@@ -59,17 +67,28 @@ class Language {
 function switchLang(lang) {
     currentLang = lang;
     const l = new Language(currentLang);
-    document.getElementById("score").setAttribute("data-prefix", l.getStr("score"));
-    document.getElementById("time").setAttribute("data-prefix", l.getStr("time"));
-    document.getElementById("control-text").innerHTML = l.getStr("controls");
-    if(firstRun) {
-        document.getElementById("game-title").innerHTML = l.getStr("title");
-        document.getElementById("game-play").innerHTML = l.getStr("play");
-    } else {
-        document.getElementById("game-title").innerHTML = l.getStr("paused");
-        document.getElementById("game-play").innerHTML = l.getStr("resume");
-        document.getElementById("game-reset").innerHTML = l.getStr("reset");
+
+    const elements = document.querySelectorAll('[data-string]');
+    for (let i = 0; i < elements.length; i++) {
+        let el = elements[i];
+        let str = l.getStr(el.getAttribute("data-string"));
+        if (el.getAttribute("data-string-first-run") != null && firstRun) {
+            str = l.getStr(el.getAttribute("data-string-first-run"));
+        }
+        if (el.getAttribute("data-string-type")) {
+            switch (el.getAttribute("data-string-type")) {
+                case "prefix":
+                    el.setAttribute("data-prefix", str);
+                    break;
+                default:
+                    el.innerHTML = str;
+                    break;
+            }
+        } else {
+            el.innerHTML = str;
+        }
     }
+
     switchActiveSelector(currentLang)
 }
 

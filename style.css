@@ -50,11 +50,40 @@ body {
     top: 50%;
     transform: translate(-50%, -50%);
     font-size: .6em;
+    width: 20%;
 }
 
 #menu-content > * {
     padding: 20px;
     border-bottom: 1px solid #444;
+}
+
+#menu-content h3 {
+    margin: 0 0 15px;
+}
+
+#help-controls dl {
+    height: 273px;
+    margin: 0;
+}
+
+#help-controls dt {
+    float: left;
+    width: 30%;
+    margin-bottom: 10px;
+}
+
+#help-controls dt code {
+    background: rgba(255, 255, 255, 1);
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #000;
+}
+
+#help-controls dd {
+    float: left;
+    width: 70%;
+    margin: 0 0 10px;
 }
 
 .menu-open #menu {
@@ -168,8 +197,8 @@ body {
 
 #tetris-upcoming {
     position: absolute;
-    right: 0;
-    transform: translateX(.2em);
+    right: 50%;
+    border: solid .2em #fff;
 }
 
 #game-stats {

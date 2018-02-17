@@ -17,21 +17,26 @@ function scaleWindow() {
     canvasContainer.height = height;
     canvasContainer.width = width + 200;
 
-    canvasBg.height = height;
-    canvasBg.width = width;
-    contextBg.scale(width / fieldSize.x, height / fieldSize.y);
+    game.g.canvasBg.height = height;
+    game.g.canvasBg.width = width;
+    game.g.contextBg.scale(width / game.g.fieldSize.x, height / game.g.fieldSize.y);
 
-    canvas.height = height;
-    canvas.width = width;
-    context.scale(width / fieldSize.x, height / fieldSize.y);
+    game.g.canvas.height = height;
+    game.g.canvas.width = width;
+    game.g.context.scale(width / game.g.fieldSize.x, height / game.g.fieldSize.y);
 
-    canvasHold.height = height / fieldSize.y * 4;
-    canvasHold.width = canvasHold.height;
-    canvasHold.style.transform = "translateX(-" + ((width / 2) + canvasHold.height) + "px) translate(-.4em, -.2em)";
-    contextHold.scale(canvasHold.width / 6, canvasHold.width / 6);
+    game.g.canvasHold.height = height / game.g.fieldSize.y * 4;
+    game.g.canvasHold.width = game.g.canvasHold.height;
+    game.g.canvasHold.style.transform = "translateX(-" + ((width / 2) + game.g.canvasHold.width) + "px) translate(-.4em, -.2em)";
+    game.g.contextHold.scale(game.g.canvasHold.width / 6, game.g.canvasHold.width / 6);
 
-    if(!firstRun && isPaused) {
-        draw();
+    game.g.canvasUpcoming.width = height / game.g.fieldSize.y * 4;
+    game.g.canvasUpcoming.height = game.g.canvasUpcoming.width * 3;
+    game.g.canvasUpcoming.style.transform = "translateX(" + ((width / 2) + game.g.canvasHold.width) + "px) translate(.4em, -.2em)";
+    game.g.contextUpcoming.scale(game.g.canvasUpcoming.width / 6, game.g.canvasUpcoming.width / 6);
+
+    if (!firstRun && game.g.isPaused) {
+        game.draw();
     }
 }
 
@@ -68,7 +73,7 @@ document.getElementById("game-play").addEventListener("click", () => {
 
 document.getElementById("game-reset").addEventListener("click", () => {
     firstRun = true;
-    clearScreen();
+    game.clearScreen();
     hideMenu();
     switchLang(currentLang);
     showMenu();
@@ -76,7 +81,7 @@ document.getElementById("game-reset").addEventListener("click", () => {
 
 document.getElementsByName("theme").forEach((el) => {
     el.addEventListener("change", (e) => {
-        theme = e.target.getAttribute("data-theme");
+        game.theme = e.target.getAttribute("data-theme");
     });
 });
 
@@ -190,7 +195,7 @@ function scoreUpdateAni() {
 }
 
 function showMenu() {
-    isPaused = true;
+    game.g.isPaused = true;
     escState = 1;
     document.getElementById("game-title").style.display = "block";
     document.getElementById("game-play").style.display = "block";
@@ -205,7 +210,7 @@ function showMenu() {
 }
 
 function hideMenu() {
-    isPaused = false;
+    game.g.isPaused = false;
     escState = 0;
     document.getElementById("game-title").style.opacity = "0";
     document.getElementById("game-play").style.opacity = "0";
@@ -215,10 +220,10 @@ function hideMenu() {
         document.getElementById("game-play").style.display = "none";
         document.getElementById("game-reset").style.display = "none";
     }, 500);
-    lastTimeUpdate = Date.now();
+    game.g.lastTimeUpdate = Date.now();
     fadeBlurOut();
     if(!firstRun) {
-        update(lastTime);
+        game.update(lastTime);
     }
 }
 

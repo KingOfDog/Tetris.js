@@ -17,22 +17,43 @@
 <div id="menu">
     <div id="menu-content">
         <div id="language-selector">
+            <h3 data-string="titleLanguage">Sprache</h3>
             <div id="lang-en" class="lang active" data-lang="en">English</div>
             <div id="lang-de" class="lang" data-lang="de">Deutsch</div>
         </div>
         <div id="theme-selector">
+            <h3 data-string="titleAppearance">Aussehen</h3>
             <div class="radio">
                 <input id="theme-default" name="theme" data-theme="default" type="radio" checked>
-                <label for="theme-default" class="radio-label">Default</label>
+                <label for="theme-default" class="radio-label" data-string="themeDefault">Default</label>
             </div>
             <div class="radio">
                 <input id="theme-modern" name="theme" data-theme="modern" type="radio">
-                <label for="theme-modern" class="radio-label">Modern</label>
+                <label for="theme-modern" class="radio-label" data-string="themeModern">Modern</label>
             </div>
             <div class="radio">
                 <input id="theme-snakes" name="theme" data-theme="snakes" type="radio">
-                <label for="theme-snakes" class="radio-label">Snakes</label>
+                <label for="theme-snakes" class="radio-label" data-string="themeSnakes">Snakes</label>
             </div>
+        </div>
+        <div id="help-controls">
+            <h3 data-string="titleControls">Steuerung</h3>
+            <dl>
+                <dt><code>A</code> / <code>←</code></dt>
+                <dd data-string="controlsLeft">Nach links bewegen</dd>
+                <dt><code>D</code> / <code>→</code></dt>
+                <dd data-string="controlsRight">Nach rechts bewegen</dd>
+                <dt><code>Q</code></dt>
+                <dd data-string="controlsTLeft">Nach links drehen</dd>
+                <dt><code>E</code></dt>
+                <dd data-string="controlsTRight">Nach rechts drehen</dd>
+                <dt><code>S</code> / <code>↓</code></dt>
+                <dd data-string="controlsDown">Fallen beschleunigen</dd>
+                <dt><code>W</code> / <code>↑</code></dt>
+                <dd data-string="controlsHold">Halten</dd>
+                <dt><code>␛</code> / <code>␣</code></dt>
+                <dd data-string="controlsPause">Pausieren</dd>
+            </dl>
         </div>
     </div>
 </div>
@@ -43,8 +64,8 @@
 </div>
 <div id="background" class="blurred">
     <div id="game-stats">
-        <div id="time">00:00</div>
-        <div id="score" data-prefix="Score: ">0</div>
+        <div id="time" data-string="counterTime" data-string-type="prefix">00:00</div>
+        <div id="score" data-string="counterScore" data-string-type="prefix">0</div>
     </div>
     <div id="canvas-container">
         <canvas id="tetris-hold" width="100" height="100"></canvas>
@@ -52,14 +73,11 @@
         <canvas id="tetris" width="240" height="400"></canvas>
         <canvas id="tetris-upcoming" width="100" height="300"></canvas>
     </div>
-    <div id="controls">
-        <div id="control-text"></div>
-    </div>
 </div>
 <div id="container">
-    <h1 id="game-title">Tetris.js</h1>
-    <button id="game-play">Play!</button>
-    <button id="game-reset">Reset</button>
+    <h1 id="game-title" data-string="titlePaused" data-string-first-run="titleGame">Tetris.js</h1>
+    <button id="game-play" data-string="btnResume" data-string-first-run="btnPlay">Play!</button>
+    <button id="game-reset" data-string="btnReset">Reset</button>
 </div>
 <div id="footer">
     <span id="version-author">v0.0.2a - by KingOfDog</span>
