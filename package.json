@@ -1,6 +1,6 @@
 {
   "name": "Tetris.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "main.js",
   "description": "Tetris.js is a decent but cool clone of the retro game classic Tetris",
   "scripts": {
@@ -12,7 +12,7 @@
   "license": "MIT",
   "devDependencies": {
     "asar": "^0.14.0",
-    "electron": "^1.7.9",
+    "electron": "^1.8.2",
     "electron-packager": "^10.1.0"
   }
 }
