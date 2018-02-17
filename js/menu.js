@@ -7,15 +7,27 @@ let escState = 1;
 
 window.onresize = () => {
     scaleWindow();
+    game.draw();
+    game.drawArena();
+    game.drawUpcoming();
+    game.drawHolding();
 };
 
 function scaleWindow() {
     const canvasContainer = document.getElementById("canvas-container");
-    const height = window.innerHeight - 40;
-    const width = height / (5 / 3);
+    let height = .8 * window.innerHeight - 40;
+    let width = height / (5 / 3);
+    let conWidth = width + (2 * (height / game.g.fieldSize.y * 5));
+    const ratio = width / conWidth;
 
-    canvasContainer.height = height;
-    canvasContainer.width = width + 200;
+    if (conWidth > window.innerWidth * .8) {
+        conWidth = window.innerWidth * .8;
+        width = conWidth * ratio;
+        height = width * (5 / 3);
+    }
+
+    canvasContainer.style.height = height + "px";
+    canvasContainer.style.width = conWidth + "px";
 
     game.g.canvasBg.height = height;
     game.g.canvasBg.width = width;
@@ -25,14 +37,14 @@ function scaleWindow() {
     game.g.canvas.width = width;
     game.g.context.scale(width / game.g.fieldSize.x, height / game.g.fieldSize.y);
 
-    game.g.canvasHold.height = height / game.g.fieldSize.y * 4;
+    game.g.canvasHold.height = height / game.g.fieldSize.y * 5;
     game.g.canvasHold.width = game.g.canvasHold.height;
-    game.g.canvasHold.style.transform = "translateX(-" + ((width / 2) + game.g.canvasHold.width) + "px) translate(-.4em, -.2em)";
+    game.g.canvasHold.style.transform = "translate(-100%, -.2em) translateX(-" + width / 2 + "px)";
     game.g.contextHold.scale(game.g.canvasHold.width / 6, game.g.canvasHold.width / 6);
 
-    game.g.canvasUpcoming.width = height / game.g.fieldSize.y * 4;
+    game.g.canvasUpcoming.width = height / game.g.fieldSize.y * 5;
     game.g.canvasUpcoming.height = game.g.canvasUpcoming.width * 3;
-    game.g.canvasUpcoming.style.transform = "translateX(" + ((width / 2) + game.g.canvasHold.width) + "px) translate(.4em, -.2em)";
+    game.g.canvasUpcoming.style.transform = "translate(100%, -.2em) translateX(" + width / 2 + "px)";
     game.g.contextUpcoming.scale(game.g.canvasUpcoming.width / 6, game.g.canvasUpcoming.width / 6);
 
     if (!firstRun && game.g.isPaused) {
@@ -47,7 +59,7 @@ document.addEventListener("keydown", (event) => {
         if(firstRun) {
             initGame();
         } else {
-            if(!isPaused){
+            if (!game.g.isPaused) {
                 showMenu();
             } else {
                 hideMenu();

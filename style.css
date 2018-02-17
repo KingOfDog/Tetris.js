@@ -202,16 +202,19 @@ body {
     border: solid .2em #fff;
 }
 
-#game-stats {
+.game-stats {
     position: absolute;
-    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) translateX(-30vw);
-    text-align: right;
+    bottom: 3.75vh;
+    transform: translateX(-50%);
+    font-size: 2.5vh;
 }
 
 #score {
     font-weight: 900;
+    bottom: 0;
+    top: 2.5vh;
+    font-size: 5vh;
 }
 
 #time:before, #score:before {
@@ -320,57 +323,57 @@ body {
     transition: 0.2s background linear 0.1s, 0.2s top linear, 0.2s transform linear 0.2s, 0.2s -webkit-transform linear 0.2s;
 }
 
-@media (max-width: 1400px) {
-    #tetris, #tetris-background {
-        height: 75%;
-    }
+/*@media (max-width: 1400px) {*/
+/*#tetris, #tetris-background {*/
+/*height: 75%;*/
+/*}*/
 
-    #game-stats {
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    #game-stats > div {
-        display: inline;
-    }
-
-    #time {
-        margin-right: 50px;
-    }
-
-    #controls {
-        top: initial;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        height: 10%;
-        overflow: auto;
-    }
-
-    #control-text {
-        height: 100%;
-    }
-
-    #language-selector {
-        font-size: 20px;
-    }
-}
+/*#game-stats {*/
+/*top: 10px;*/
+/*left: 50%;*/
+/*transform: translateX(-50%);*/
+/*}*/
+/**/
+/*#game-stats > div {*/
+/*display: inline;*/
+/*}*/
+/**/
+/*#time {*/
+/*margin-right: 50px;*/
+/*}*/
+/**/
+/*#controls {*/
+/*top: initial;*/
+/*bottom: 10px;*/
+/*left: 50%;*/
+/*transform: translateX(-50%);*/
+/*height: 10%;*/
+/*overflow: auto;*/
+/*}*/
+/**/
+/*#control-text {*/
+/*height: 100%;*/
+/*}*/
+/**/
+/*#language-selector {*/
+/*font-size: 20px;*/
+/*}*/
+/*}*/
 
 @media (max-width: 840px) {
-    #game-stats {
-        font-size: 20px;
-        text-align: center;
-    }
-
-    #game-stats > div {
-        margin-right: 0;
-        display: block;
-    }
-
-    #control-text {
-        font-size: 14px;
-    }
+    /*#game-stats {*/
+    /*font-size: 20px;*/
+    /*text-align: center;*/
+    /*}*/
+    /**/
+    /*#game-stats > div {*/
+    /*margin-right: 0;*/
+    /*display: block;*/
+    /*}*/
+    /**/
+    /*#control-text {*/
+    /*font-size: 14px;*/
+    /*}*/
 }
 
 /*
