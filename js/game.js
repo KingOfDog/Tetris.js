@@ -18,6 +18,8 @@ class Game {
     }
 
     drawHolding() {
+        if (this.p.holdingTile === null)
+            return;
         this.g.contextHold.clearRect(0, 0, this.g.canvasHold.width, this.g.canvasHold.height);
         const offset = centerOffset(this.p.holdingTile);
         const x = 3 - (this.p.holdingTile[0].length / 2) + offset.x;
@@ -35,8 +37,7 @@ class Game {
         });
     }
 
-    drawTile(x, y, offset, color, matrix, useContext = this.g.context) {
-        const ctx = useContext;
+    drawTile(x, y, offset, color, matrix, ctx = this.g.context) {
         switch (this.g.theme) {
             case "default":
                 ctx.fillStyle = color;
@@ -73,6 +74,9 @@ class Game {
                     r3 = 0;
                 }
                 drawRoundRect(ctx, x + offset.x, y + offset.y, 1, 1, [r1, r2, r3, r4]);
+                break;
+            case "retro":
+                drawReliefRect(ctx, x + offset.x, y + offset.y, 1, 1, .15, color);
                 break;
             default:
                 this.g.theme = "default";
@@ -113,6 +117,13 @@ class Game {
             });
         });
         this.drawArena();
+    }
+
+    redrawScreen() {
+        this.draw();
+        this.drawArena();
+        this.drawHolding();
+        this.drawUpcoming();
     }
 
     registerListeners() {

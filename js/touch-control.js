@@ -1,27 +1,27 @@
 const hammertime = new Hammer(document.getElementById("tetris"));
 
 hammertime.on('swipeleft', (e) => {
-    keys.left.action();
+    game.g.keys.left.action();
 });
 
 hammertime.on('swiperight', (e) => {
-    keys.right.action();
+    game.g.keys.right.action();
 });
 
 hammertime.on('swipeup', () => {
-    keys.holdTile.action();
+    game.g.keys.holdTile.action();
 });
 
 hammertime.on('pandown swipedown', (e) => {
-    keys.down.action();
+    game.g.keys.down.action();
 });
 
 hammertime.on('tap', (e) => {
     if (e.tapCount >= 2) {
-        keys.rotateRight.action();
+        game.g.keys.rotateRight.action();
     }
 });
 
 hammertime.on('press', () => {
-    keys.down.action();
+    game.g.keys.down.action();
 });

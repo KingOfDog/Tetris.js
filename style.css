@@ -212,9 +212,27 @@ body {
 
 #score {
     font-weight: 900;
-    bottom: 0;
+    bottom: initial;
     top: 2.5vh;
     font-size: 5vh;
+}
+
+#score.update {
+    animation: scoreUpdate .5s;
+}
+
+@keyframes scoreUpdate {
+    0% {
+        transform: translateX(-50%) scale(1);
+    }
+
+    50% {
+        transform: translateX(-50%) scale(1.5);
+    }
+
+    100% {
+        transform: translateX(-50%) scale(1);
+    }
 }
 
 #time:before, #score:before {
@@ -228,6 +246,10 @@ body {
     transform: translate(-50%, -50%) translateX(30vw);
     font-size: 20px;
     max-width: 20vw;
+}
+
+.game-over #score {
+    top: 50%;
 }
 
 #footer {

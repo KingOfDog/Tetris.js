@@ -2,6 +2,7 @@ class Arena {
     constructor(gameInfo, game) {
         this.g = gameInfo;
         this.game = game;
+        this.p = this.g.player;
         this.field = createMatrix(this.g.fieldSize.x, this.g.fieldSize.y);
     }
 

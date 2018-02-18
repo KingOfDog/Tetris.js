@@ -164,6 +164,47 @@ function drawRoundRect(ctx, x, y, w, h, r) {
     ctx.fill();
 }
 
+function drawReliefRect(ctx, x, y, w, h, l, clr) {
+    ctx.fillStyle = clr;
+    ctx.fillRect(x + l, y + l, w - (2 * l), h - (2 * l));
+
+    ctx.fillStyle = colorLuminance(clr, .6);
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + w, y);
+    ctx.lineTo(x + w - l, y + l);
+    ctx.lineTo(x + l, y + l);
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.fillStyle = colorLuminance(clr, .3);
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, y + h);
+    ctx.lineTo(x + l, y + h - l);
+    ctx.lineTo(x + l, y + l);
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.fillStyle = colorLuminance(clr, -.6);
+    ctx.beginPath();
+    ctx.moveTo(x, y + h);
+    ctx.lineTo(x + w, y + h);
+    ctx.lineTo(x + w - l, y + h - l);
+    ctx.lineTo(x + l, y + h - l);
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.fillStyle = colorLuminance(clr, -.3);
+    ctx.beginPath();
+    ctx.moveTo(x + w, y);
+    ctx.lineTo(x + w, y + h);
+    ctx.lineTo(x + w - l, y + h - l);
+    ctx.lineTo(x + w - l, y + l);
+    ctx.fill();
+    ctx.closePath();
+}
+
 function formatMillis(millis) {
     const d = new Date(1000 * Math.round(millis / 1000));
     return (d.getUTCMinutes() < 10 ? "0" : "") + d.getUTCMinutes() + ":" + (d.getUTCSeconds() < 10 ? "0" : "") + d.getUTCSeconds();
@@ -242,4 +283,27 @@ const game = new Game();
 
 function startGame() {
     game.start();
+}
+
+/**
+ * @return {string}
+ */
+function colorLuminance(hex, lum) {
+
+    // validate hex string
+    hex = String(hex).replace(/[^0-9a-f]/gi, '');
+    if (hex.length < 6) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    lum = lum || 0;
+
+    // convert to decimal and change luminosity
+    let rgb = "#", c, i;
+    for (i = 0; i < 3; i++) {
+        c = parseInt(hex.substr(i * 2, 2), 16);
+        c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+        rgb += ("00" + c).substr(c.length);
+    }
+
+    return rgb;
 }

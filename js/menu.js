@@ -7,10 +7,7 @@ let escState = 1;
 
 window.onresize = () => {
     scaleWindow();
-    game.draw();
-    game.drawArena();
-    game.drawUpcoming();
-    game.drawHolding();
+    game.redrawScreen();
 };
 
 function scaleWindow() {
@@ -93,7 +90,8 @@ document.getElementById("game-reset").addEventListener("click", () => {
 
 document.getElementsByName("theme").forEach((el) => {
     el.addEventListener("change", (e) => {
-        game.theme = e.target.getAttribute("data-theme");
+        game.g.theme = e.target.getAttribute("data-theme");
+        game.redrawScreen();
     });
 });
 
@@ -185,25 +183,10 @@ function fadeBlurOut() {
 const scoreEl = document.getElementById("score");
 const nativeTransform = getComputedStyle(scoreEl).transform;
 function scoreUpdateAni() {
-    const scale = 1.5;
-    const finalScale = 1;
-    let currentScale = 1;
-    let upscaling = true;
-
-    const id = setInterval(frame, 5);
-
-    function frame() {
-        if(currentScale <= scale && upscaling) {
-            currentScale += 0.02;
-            scoreEl.style.transform = nativeTransform + " scale(" + currentScale + ")";
-        } else if (currentScale >= finalScale) {
-            upscaling = false;
-            currentScale -= 0.02;
-            scoreEl.style.transform = nativeTransform + " scale(" + currentScale + ")";
-        } else {
-            clearInterval(id);
-        }
-    }
+    scoreEl.classList.add("update");
+    setTimeout(() => {
+        scoreEl.classList.remove("update");
+    }, 1500);
 }
 
 function showMenu() {
@@ -235,7 +218,7 @@ function hideMenu() {
     game.g.lastTimeUpdate = Date.now();
     fadeBlurOut();
     if(!firstRun) {
-        game.update(lastTime);
+        game.update(game.g.lastTime);
     }
 }
 
