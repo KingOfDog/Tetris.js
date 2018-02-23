@@ -21,6 +21,9 @@ Currently, Tetris.js is a very minimalistic game with the smallest possible amou
 * Global highscore ranking
 * Game Over Screen
 * Add more languages
+* Add pause button in order to allow mobile users to pause the game
+* Implement different color schemes
+* Implement light/dark mode
 * ~Display the upcoming tile(s)~
 * ~Distribute content of tetris.js to multiple classes~
 * ~Hold one tile and swap them with the current one~
