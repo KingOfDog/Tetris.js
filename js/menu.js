@@ -23,26 +23,32 @@ function scaleWindow() {
         height = width * (5 / 3);
     }
 
+    width = Math.floor(width);
+    height = Math.floor(height);
+
     canvasContainer.style.height = height + "px";
     canvasContainer.style.width = conWidth + "px";
 
+    const canvasScale = width / game.g.fieldSize.x;
+
     game.g.canvasBg.height = height;
     game.g.canvasBg.width = width;
-    game.g.contextBg.scale(width / game.g.fieldSize.x, height / game.g.fieldSize.y);
+    game.g.contextBg.scale(canvasScale, canvasScale);
 
     game.g.canvas.height = height;
     game.g.canvas.width = width;
-    game.g.context.scale(width / game.g.fieldSize.x, height / game.g.fieldSize.y);
+    game.g.context.scale(canvasScale, canvasScale);
 
-    game.g.canvasHold.height = height / game.g.fieldSize.y * 5;
-    game.g.canvasHold.width = game.g.canvasHold.height;
+    game.g.canvasHold.height = game.g.canvasHold.width = height / game.g.fieldSize.y * 5;
     game.g.canvasHold.style.transform = "translate(-100%, -.2em) translateX(-" + width / 2 + "px)";
-    game.g.contextHold.scale(game.g.canvasHold.width / 6, game.g.canvasHold.width / 6);
+    const contextHoldScale = Math.floor(game.g.canvasHold.width / 6);
+    game.g.contextHold.scale(contextHoldScale, contextHoldScale);
 
     game.g.canvasUpcoming.width = height / game.g.fieldSize.y * 5;
     game.g.canvasUpcoming.height = game.g.canvasUpcoming.width * 3;
     game.g.canvasUpcoming.style.transform = "translate(100%, -.2em) translateX(" + width / 2 + "px)";
-    game.g.contextUpcoming.scale(game.g.canvasUpcoming.width / 6, game.g.canvasUpcoming.width / 6);
+    const contextUpcomingScale = Math.floor(game.g.canvasUpcoming.width / 6);
+    game.g.contextUpcoming.scale(contextUpcomingScale, contextUpcomingScale);
 
     if (!firstRun && game.g.isPaused) {
         game.draw();

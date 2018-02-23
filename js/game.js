@@ -38,17 +38,20 @@ class Game {
     }
 
     drawTile(x, y, offset, color, matrix, ctx = this.g.context) {
+        ctx.fillStyle = color;
+        x += offset.x;
+        y += offset.y;
         switch (this.g.theme) {
             case "default":
-                ctx.fillStyle = color;
-                ctx.fillRect(x + offset.x + tileGap / 2, y + offset.y + tileGap / 2, 1 - tileGap, 1 - tileGap);
+                ctx.fillRect(x + tileGap / 2, y + tileGap / 2, 1 - tileGap, 1 - tileGap);
+                break;
+            case "clean":
+                ctx.fillRect(x, y, 1, 1);
                 break;
             case "modern":
-                ctx.fillStyle = color;
-                drawRoundRect(ctx, x + offset.x + tileGap / 2, y + offset.y + tileGap / 2, 1 - tileGap, 1 - tileGap, .15);
+                drawRoundRect(ctx, x + tileGap / 2, y + tileGap / 2, 1 - tileGap, 1 - tileGap, .15);
                 break;
             case "snakes":
-                ctx.fillStyle = color;
                 let r1 = .15, // top right
                     r2 = .15, // bottom right
                     r3 = .15, // bottom left
@@ -73,10 +76,10 @@ class Game {
                     r2 = 0;
                     r3 = 0;
                 }
-                drawRoundRect(ctx, x + offset.x, y + offset.y, 1, 1, [r1, r2, r3, r4]);
+                drawRoundRect(ctx, x, y, 1, 1, [r1, r2, r3, r4]);
                 break;
             case "retro":
-                drawReliefRect(ctx, x + offset.x, y + offset.y, 1, 1, .15, color);
+                drawReliefRect(ctx, x, y, 1, 1, .15, color);
                 break;
             default:
                 this.g.theme = "default";
