@@ -1,1 +1,6 @@
 .idea/
+node_modules/
+Tetris.js-*/
+package-lock.json
+Tetris.js-*.zip
+Tetris.js-*.rar
