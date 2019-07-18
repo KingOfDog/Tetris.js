@@ -25,7 +25,7 @@ function centerOffset(matrix) {
     let offsetY = 0;
     matrix.forEach((row, y) => {
         let onlyZeroesY = true;
-        row.forEach((value, x) => {
+        row.forEach((value) => {
             if (value > 0) {
                 onlyZeroesY = false;
             }
@@ -39,7 +39,7 @@ function centerOffset(matrix) {
     });
     for (let x = 0; x < matrix[0].length; x++) {
         let onlyZeroesX = true;
-        matrix.forEach((row, y) => {
+        matrix.forEach((row) => {
             if (row[x] > 0)
                 onlyZeroesX = false;
         });
@@ -165,44 +165,6 @@ function drawRoundRect(ctx, x, y, w, h, r) {
 }
 
 function drawReliefRect(ctx, x, y, w, h, l, clr) {
-    ctx.fillStyle = clr;
-    ctx.fillRect(x + l, y + l, w - (2 * l), h - (2 * l));
-
-    ctx.fillStyle = colorLuminance(clr, .6);
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + w, y);
-    ctx.lineTo(x + w - l, y + l);
-    ctx.lineTo(x + l, y + l);
-    ctx.fill();
-    ctx.closePath();
-
-    ctx.fillStyle = colorLuminance(clr, .3);
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x, y + h);
-    ctx.lineTo(x + l, y + h - l);
-    ctx.lineTo(x + l, y + l);
-    ctx.fill();
-    ctx.closePath();
-
-    ctx.fillStyle = colorLuminance(clr, -.6);
-    ctx.beginPath();
-    ctx.moveTo(x, y + h);
-    ctx.lineTo(x + w, y + h);
-    ctx.lineTo(x + w - l, y + h - l);
-    ctx.lineTo(x + l, y + h - l);
-    ctx.fill();
-    ctx.closePath();
-
-    ctx.fillStyle = colorLuminance(clr, -.3);
-    ctx.beginPath();
-    ctx.moveTo(x + w, y);
-    ctx.lineTo(x + w, y + h);
-    ctx.lineTo(x + w - l, y + h - l);
-    ctx.lineTo(x + w - l, y + l);
-    ctx.fill();
-    ctx.closePath();
 }
 
 function formatMillis(millis) {
@@ -279,10 +241,14 @@ function rotate(matrix, dir) {
     }
 }
 
-const game = new Game();
+const manager = new TetrisManager();
+manager.createPlayer();
+
+// const game = new Game();
 
 function startGame() {
-    game.start();
+    // game.start();
+    manager.start();
 }
 
 /**

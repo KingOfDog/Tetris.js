@@ -38,54 +38,14 @@ class Game {
     }
 
     drawTile(x, y, offset, color, matrix, ctx = this.g.context) {
-        ctx.fillStyle = color;
         x += offset.x;
         y += offset.y;
-        switch (this.g.theme) {
-            case "default":
-                ctx.fillRect(x + tileGap / 2, y + tileGap / 2, 1 - tileGap, 1 - tileGap);
-                break;
-            case "clean":
-                ctx.fillRect(x, y, 1, 1);
-                break;
-            case "modern":
-                drawRoundRect(ctx, x + tileGap / 2, y + tileGap / 2, 1 - tileGap, 1 - tileGap, .15);
-                break;
-            case "snakes":
-                let r1 = .15, // top right
-                    r2 = .15, // bottom right
-                    r3 = .15, // bottom left
-                    r4 = .15; // top left
-                // Is there a tile to the left?
-                if (matrix[y][x - 1] > 0) {
-                    r3 = 0;
-                    r4 = 0;
-                }
-                // Is there a tile to the right?
-                if (matrix[y][x + 1] > 0) {
-                    r1 = 0;
-                    r2 = 0;
-                }
-                // Is there a tile to the top?
-                if (matrix[y - 1] !== undefined && matrix[y - 1][x] > 0) {
-                    r1 = 0;
-                    r4 = 0;
-                }
-                // Is there a tile to the bottom?
-                if (matrix[y + 1] !== undefined && matrix[y + 1][x] > 0) {
-                    r2 = 0;
-                    r3 = 0;
-                }
-                drawRoundRect(ctx, x, y, 1, 1, [r1, r2, r3, r4]);
-                break;
-            case "retro":
-                drawReliefRect(ctx, x, y, 1, 1, .15, color);
-                break;
-            default:
-                this.g.theme = "default";
-                this.drawTile(x, y, offset, color, matrix, ctx);
-                break;
-        }
+
+        ctx.save();
+        ctx.translate(x, y);
+
+        this.g.theme.drawTile(color, matrix, ctx, x, y);
+        ctx.restore();
     }
 
     drawUpcoming() {
@@ -141,9 +101,42 @@ class Game {
         });
     }
 
+    rescale() {
+        let conWidth = manager.container.clientWidth / manager.instances.size;
+        let conHeight = manager.container.clientHeight - 78;
+
+        if (conHeight < conWidth) {
+            conWidth = conHeight;
+        }
+
+        conWidth = Math.floor(conWidth);
+
+        const canvasScale = Math.floor(conWidth * .6 / this.g.fieldSize.x);
+        const canvasHoldScale = Math.floor(conWidth * .2 / 6);
+
+        const realWidth = canvasScale * this.g.fieldSize.x + 2 * canvasHoldScale * 6;
+        const realHeight = canvasScale * this.g.fieldSize.y;
+
+        this.g.canvasContainer.style.width = realWidth + 'px';
+        this.g.canvasContainer.style.height = realHeight + 'px';
+
+        this.g.canvasUpcoming.style.height = this.g.canvasUpcoming.clientWidth * 3 + 'px';
+        this.g.canvasHold.style.height = this.g.canvasHold.clientWidth + 'px';
+
+        this.g.canvasBg.adjustResolution(this.g.contextBg, canvasScale);
+        this.g.canvas.adjustResolution(this.g.context, canvasScale);
+        this.g.canvasUpcoming.adjustResolution(this.g.contextUpcoming, canvasHoldScale);
+        this.g.canvasHold.adjustResolution(this.g.contextHold, canvasHoldScale);
+
+        if (!firstRun && this.g.isPaused) {
+            this.draw();
+        }
+        this.redrawScreen();
+    }
+
     saveHighscore() {
-        if (getCookie("highscore").value < this.p.score) {
-            document.cookie = "highscore=" + this.p.score + "; max-age=" + 60 * 60 * 24 * 365 * 1000 + "; path=/;";
+        if (getCookie('highscore') && getCookie('highscore').value < this.p.score) {
+            document.cookie = 'highscore=' + this.p.score + '; max-age=' + 60 * 60 * 24 * 365 * 1000 + '; path=/;';
         }
     }
 
@@ -175,18 +168,24 @@ class Game {
         }
     }
 
-    updateScore() {
+    updateScore(animate = true) {
         if (this.g.lastScore !== this.p.score) {
-            scoreUpdateAni();
+            this.g.updateScore(animate);
             this.g.lastScore = this.p.score;
             this.saveHighscore();
+
+            if (this.p.score - this.p.lastLevelScore > 500) {
+                this.p.lastLevelScore = this.p.score;
+                this.p.level++;
+                this.g.dropInterval *= .9;
+            }
         }
-        document.getElementById('score').innerText = this.p.score.toString();
+        this.g.updateScore(false);
     }
 
     updateTime() {
         timePassed += Date.now() - this.g.lastTimeUpdate;
-        timeElement.innerHTML = formatMillis(timePassed);
+        this.g.time.innerText = formatMillis(timePassed);
         this.g.lastTimeUpdate = Date.now();
     }
 }

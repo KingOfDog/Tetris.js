@@ -1,59 +1,59 @@
 body {
+    overflow: hidden;
     margin: 0;
     padding: 0;
-    overflow: hidden;
     background: #202028;
+    color: #fff;
     font-family: Roboto, Helvetica, Arial, sans-serif;
     font-size: 2.5em;
-    color: #fff;
 }
 
 .menu {
+    position: absolute;
+    -moz-transform: scale(.5);
+    -ms-transform: scale(.5);
+    -o-transform: scale(.5);
+    -webkit-transform: scale(.5);
+    transform: scale(.5);
+    z-index: 1;
+    width: 3.5rem;
+    height: 2.7rem;
+    padding: 0;
+    border: 0;
+    background: 0;
+    outline: 0;
     -webkit-transition: 0.1s -webkit-transform linear;
     transition: 0.1s -webkit-transform linear;
     transition: 0.1s transform linear;
     transition: 0.1s transform linear, 0.1s -webkit-transform linear;
-    position: absolute;
-    background: 0;
     float: left;
-    height: 2.7rem;
-    width: 3.5rem;
-    z-index: 1;
-    outline: 0;
-    padding: 0;
-    border: 0;
-    -webkit-transform: scale(.5);
-    -moz-transform: scale(.5);
-    -ms-transform: scale(.5);
-    -o-transform: scale(.5);
-    transform: scale(.5);
 }
 
 #menu {
     position: fixed;
+    top: 0;
+    transform: translateX(-100%);
+    z-index: 100;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, .75);
-    transform: translateX(-100%);
-    -webkit-transition: transform .5s;
     -moz-transition: transform .5s;
     -ms-transition: transform .5s;
     -o-transition: transform .5s;
+    -webkit-transition: transform .5s;
     transition: transform .5s;
-    z-index: 100;
-    top: 0;
 }
 
 #menu-content {
     position: absolute;
-    left: 50%;
     top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    font-size: .6em;
+    overflow: auto;
     width: 375px;
     max-width: 100%;
     max-height: 90%;
-    overflow: auto;
+    font-size: .6em;
 }
 
 #menu-content > * {
@@ -75,22 +75,22 @@ body {
 }
 
 #help-controls dt {
-    float: left;
     width: 30%;
     margin-bottom: 10px;
+    float: left;
 }
 
 #help-controls dt code {
-    background: rgba(255, 255, 255, 1);
     padding: 5px 10px;
     border-radius: 5px;
+    background: rgba(255, 255, 255, 1);
     color: #000;
 }
 
 #help-controls dd {
-    float: left;
     width: 70%;
     margin: 0 0 10px;
+    float: left;
 }
 
 .menu-open #menu {
@@ -99,16 +99,16 @@ body {
 
 #menu-opener {
     position: absolute;
-    left: 10px;
     top: 10px;
+    left: 10px;
     z-index: 101;
 }
 
 .lang {
     display: inline;
     margin-left: 10px;
-    border-radius: 2px;
     padding: 4px 8px;
+    border-radius: 2px;
     cursor: pointer;
 }
 
@@ -118,8 +118,8 @@ body {
 
 #game-title {
     position: absolute;
-    left: 50%;
     top: 50%;
+    left: 50%;
     transform: translate(-50%, -25%) translateY(-200px);
     opacity: 1;
     transition: opacity .5s;
@@ -132,69 +132,73 @@ body {
     transform: translate(-50%, -50%);
     width: 300px;
     height: 75px;
-    font-size: 30px;
-    box-shadow: none;
-    -webkit-text-fill-color: #fff;
-    color: #ffff !important;
-    background: #3877FF !important;
     border: 0 !important;
     border-radius: 0 !important;
-    transition: box-shadow .2s, opacity .5s;
-    cursor: pointer;
+    background: #3877FF !important;
+    color: #ffff !important;
+    box-shadow: none;
     opacity: 1;
+    font-size: 30px;
+    cursor: pointer;
+    transition: box-shadow .2s, opacity .5s;
+    -webkit-text-fill-color: #fff;
 }
 
 #game-reset {
+    transform: translate(-50%, -50%) translateY(85px);
     display: none;
     background-color: #FF0D72 !important;
-    transform: translate(-50%, -50%) translateY(85px);
     opacity: 0;
 }
 
+#game-play {
+    z-index: 10;
+}
+
 #game-play:hover, #game-play:active, #game-play:focus {
-    outline: none !important;
     box-shadow: 3px 4px 0 3px rgba(0, 0, 0, 0.2) !important;
+    outline: none !important;
 }
 
 #background {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
     filter: url(#f2);
 }
 
-#background.blurred {
+.blurred {
     filter: url(#f1);
 }
 
 #canvas-container {
-    height: 936px;
-    width: 761px;
     position: absolute;
-    left: 50%;
     top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
+    width: 761px;
+    height: 936px;
 }
 
 #tetris, #tetris-background {
     position: absolute;
-    left: 50%;
     top: 50%;
-    -webkit-transform: translate(-50%, -50%);
+    left: 50%;
     -moz-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    border: solid .2em #fff;
     z-index: 1;
+    border: solid .2em #fff;
     background: transparent;
 }
 
 #tetris-background {
-    border: none;
     z-index: 0;
+    border: none;
 }
 
 #tetris-hold {
@@ -209,36 +213,36 @@ body {
     border: solid .2em #fff;
 }
 
-.game-stats {
-    position: absolute;
-    left: 50%;
-    bottom: 3.75vh;
-    transform: translateX(-50%);
-    font-size: 2.5vh;
-}
-
-#score {
-    font-weight: 900;
-    bottom: initial;
-    top: 2.5vh;
-    font-size: 5vh;
-}
-
+/*.game-stats {*/
+/*    position: absolute;*/
+/*    bottom: 3.75vh;*/
+/*    left: 50%;*/
+/*    transform: translateX(-50%);*/
+/*    font-size: 2.5vh;*/
+/*}*/
+/**/
+/*#score {*/
+/*    top: 2.5vh;*/
+/*    bottom: initial;*/
+/*    font-size: 5vh;*/
+/*    font-weight: 900;*/
+/*}*/
+/**/
 #score.update {
     animation: scoreUpdate .5s;
 }
 
 @keyframes scoreUpdate {
     0% {
-        transform: translateX(-50%) scale(1);
+        transform: scale(1);
     }
 
     50% {
-        transform: translateX(-50%) scale(1.5);
+        transform: scale(1.5);
     }
 
     100% {
-        transform: translateX(-50%) scale(1);
+        transform: scale(1);
     }
 }
 
@@ -251,8 +255,8 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) translateX(30vw);
-    font-size: 20px;
     max-width: 20vw;
+    font-size: 20px;
 }
 
 .game-over #score {
@@ -261,12 +265,12 @@ body {
 
 #footer {
     position: absolute;
-    bottom: 10px;
-    width: 95%;
-    left: 2.5%;
     right: 2.5%;
-    font-size: 12px;
+    bottom: 10px;
+    left: 2.5%;
+    width: 95%;
     color: rgba(255, 255, 255, .5);
+    font-size: 12px;
 }
 
 #version-author {
@@ -274,21 +278,21 @@ body {
 }
 
 #corner-buttons {
-    display: inline-block;
     position: absolute;
     right: 0;
+    display: inline-block;
 }
 
 #corner-buttons > a {
-    text-decoration: none;
-    display: inline-block;
     left: 10px;
+    display: inline-block;
     color: rgba(255, 255, 255, .5);
-    -webkit-transition: color .2s;
     -moz-transition: color .2s;
     -ms-transition: color .2s;
     -o-transition: color .2s;
+    -webkit-transition: color .2s;
     transition: color .2s;
+    text-decoration: none;
 }
 
 #corner-buttons > a:hover, #corner-buttons > a:active {
@@ -296,18 +300,16 @@ body {
 }
 
 .bar, .bar::before, .bar::after {
-    -webkit-transition: 0.2s background linear 0.1s, 0.2s top linear 0.2s, 0.2s -webkit-transform linear;
-    transition: 0.2s background linear 0.1s, 0.2s top linear 0.2s, 0.2s -webkit-transform linear;
-    transition: 0.2s background linear 0.1s, 0.2s top linear 0.2s, 0.2s transform linear;
-    transition: 0.2s background linear 0.1s, 0.2s top linear 0.2s, 0.2s transform linear, 0.2s -webkit-transform linear;
     position: absolute;
-    background: #fff;
-    margin: auto;
-    width: 100%;
-    height: 0.3rem;
-    content: '';
     top: 50%;
     left: 0;
+    width: 100%;
+    height: 0.3rem;
+    margin: auto;
+    background: #fff;
+    content: '';
+    -webkit-transition: 0.2s background linear 0.1s, 0.2s top linear 0.2s, 0.2s -webkit-transform linear;
+    transition: 0.2s background linear 0.1s, 0.2s top linear 0.2s, 0.2s transform linear;
 }
 
 .bar {
@@ -366,21 +368,21 @@ Radio Buttons
 }
 
 .radio input[type="radio"] + .radio-label:before {
-    content: '';
-    background: #f4f4f4;
-    border-radius: 100%;
-    border: 1px solid #b4b4b4;
+    position: relative;
+    top: -0.2em;
     display: inline-block;
     width: 1.4em;
     height: 1.4em;
-    position: relative;
-    top: -0.2em;
     margin-right: 1em;
-    vertical-align: top;
-    cursor: pointer;
+    border: 1px solid #b4b4b4;
+    border-radius: 100%;
+    background: #f4f4f4;
+    content: '';
     text-align: center;
+    cursor: pointer;
     -webkit-transition: all 250ms ease;
     transition: all 250ms ease;
+    vertical-align: top;
 }
 
 .radio input[type="radio"]:checked + .radio-label:before {
@@ -390,17 +392,72 @@ Radio Buttons
 }
 
 .radio input[type="radio"]:focus + .radio-label:before {
-    outline: none;
     border-color: #3197EE;
+    outline: none;
 }
 
 .radio input[type="radio"]:disabled + .radio-label:before {
-    -webkit-box-shadow: inset 0 0 0 4px #f4f4f4;
-    box-shadow: inset 0 0 0 4px #f4f4f4;
     border-color: #b4b4b4;
     background: #b4b4b4;
+    -webkit-box-shadow: inset 0 0 0 4px #f4f4f4;
+    box-shadow: inset 0 0 0 4px #f4f4f4;
 }
 
 .radio input[type="radio"] + .radio-label:empty:before {
     margin-right: 0;
+}
+
+/* Game */
+.game-container {
+    display: flex;
+    height: calc(100vh - 40px);
+}
+
+.game-instance {
+    flex-grow: 1;
+}
+
+.score {
+    margin: 10px 0;
+    font-size: 40px;
+    text-align: center;
+}
+
+.score.update {
+    animation: scoreUpdate .5s;
+}
+
+.time {
+    font-size: 25px;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.canvas-container {
+    position: relative;
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.tetris-hold {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20%;
+}
+
+.tetris-arena, .tetris-background {
+    position: absolute;
+    top: 0;
+    left: 20%;
+    width: 60%;
+    height: 100%;
+}
+
+.tetris-upcoming {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20%;
 }

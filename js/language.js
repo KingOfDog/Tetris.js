@@ -53,6 +53,17 @@ let firstRun = true;
 class Language {
 
     constructor(lang) {
+        const xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                const obj = JSON.parse(this.responseText);
+                console.log(JSON.stringify(obj));
+            }
+        };
+
+        xmlhttp.open("GET", "/lang.json", true);
+        xmlhttp.send();
+
         this.lang = lang;
         if(eval('typeof ' + this.lang) === 'undefined')
             this.lang = "en";

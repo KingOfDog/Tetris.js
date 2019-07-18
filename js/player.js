@@ -6,9 +6,8 @@ class Player {
         this.pos = {x: 0, y: 0};
         this.matrix = null;
         this.score = 0;
-
-        this.isHolding = false;
-        this.holdingTile = null;
+        this.level = 1;
+        this.lastLevelScore = 0;
 
         this.a.p = this;
     }
@@ -27,19 +26,6 @@ class Player {
             this.game.updateScore();
         }
         this.g.dropCounter = 0;
-    }
-
-    hold() {
-        if (this.isHolding)
-            return;
-        if (this.holdingTile === null) {
-            this.holdingTile = this.matrix;
-            this.reset(true);
-        } else {
-            this.holdingTile = [this.matrix, this.matrix = this.holdingTile][0];
-            this.reset(true, false);
-        }
-        this.game.drawHolding();
     }
 
     move(dir) {

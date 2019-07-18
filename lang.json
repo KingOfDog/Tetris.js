@@ -1,0 +1,70 @@
+{
+  "en": {
+    "button": {
+      "play": "Play!",
+      "reset": "Reset",
+      "resume": "Resume"
+    },
+    "controls": {
+      "down": "Accelerate falling",
+      "hold": "Hold",
+      "left": "Move left",
+      "pause": "Pause",
+      "right": "Move right",
+      "tLeft": "Rotate to the left",
+      "tRight": "Rotate to the right"
+    },
+    "counter": {
+      "score": "Score: ",
+      "time": "Time: "
+    },
+    "theme": {
+      "default": "Default",
+      "clean": "Clean",
+      "modern": "Modern",
+      "retro": "Retro",
+      "snakes": "Snakes"
+    },
+    "title": {
+      "appearance": "Appearance",
+      "controls": "Controls",
+      "game": "Tetris.js",
+      "language": "Language",
+      "paused": "Paused"
+    }
+  },
+  "de": {
+    "button": {
+      "play": "Spielen!",
+      "reset": "Zurücksetzen",
+      "resume": "Fortsetzen"
+    },
+    "controls": {
+      "down": "Fallen beschleunigen",
+      "hold": "Halten",
+      "left": "Nach links bewegen",
+      "pause": "Pausieren",
+      "right": "Nach rechts bewegen",
+      "tLeft": "Nach rechts drehen",
+      "tRight": "Nach links drehen"
+    },
+    "counter": {
+      "score": "Punkte: ",
+      "time": "Zeit: "
+    },
+    "theme": {
+      "default": "Standard",
+      "clean": "Lückenlos",
+      "modern": "Futuristisch",
+      "retro": "Retro",
+      "snakes": "Schlangen"
+    },
+    "title": {
+      "appearance": "Erscheinungsbild",
+      "controls": "Steuerung",
+      "game": "Tetris.js",
+      "language": "Sprache",
+      "paused": "Pausiert"
+    }
+  }
+}

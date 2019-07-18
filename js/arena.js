@@ -23,13 +23,8 @@ class Arena {
             this.field.unshift(row);
             ++y;
 
-            this.p.score += rowCount * 10;
+            this.p.score += rowCount * 20;
             rowCount *= 2;
-        }
-        if (this.p.score - this.g.prevUpdateScore > 50) {
-            this.g.dropInterval -= 20;
-            this.g.dropInterval = this.g.dropInterval > 100 ? this.g.dropInterval : 100;
-            this.g.prevUpdateScore = this.p.score;
         }
         this.game.drawArena();
     }

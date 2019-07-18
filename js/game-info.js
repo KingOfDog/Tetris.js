@@ -3,19 +3,43 @@ class GameInfo {
         this.fieldSize = {x: 12, y: 20};
         this.arena = new Arena(this, game);
 
-        this.player = new Player(this, game);
+        this.player = new LocalPlayer(this, game);
 
-        this.canvas = document.getElementById('tetris');
-        this.context = this.canvas.getContext('2d');
+        const container = document.createElement('div');
+        container.className = 'game-instance';
+        manager.container.appendChild(container);
 
-        this.canvasBg = document.getElementById('tetris-background');
-        this.contextBg = this.canvasBg.getContext('2d');
+        this.score = document.createElement('div');
+        this.score.classList.add('game-stats', 'score');
+        container.appendChild(this.score);
 
-        this.canvasHold = document.getElementById('tetris-hold');
+        this.canvasContainer = document.createElement('div');
+        this.canvasContainer.className = 'canvas-container';
+        container.appendChild(this.canvasContainer);
+
+        this.canvasHold = document.createElement('canvas');
+        this.canvasHold.className = 'tetris-hold';
         this.contextHold = this.canvasHold.getContext('2d');
+        this.canvasContainer.appendChild(this.canvasHold);
 
-        this.canvasUpcoming = document.getElementById('tetris-upcoming');
+        this.canvasBg = document.createElement('canvas');
+        this.canvasBg.className = 'tetris-background';
+        this.contextBg = this.canvasBg.getContext('2d');
+        this.canvasContainer.appendChild(this.canvasBg);
+
+        this.canvas = document.createElement('canvas');
+        this.canvas.className = 'tetris-arena';
+        this.context = this.canvas.getContext('2d');
+        this.canvasContainer.appendChild(this.canvas);
+
+        this.canvasUpcoming = document.createElement('canvas');
+        this.canvasUpcoming.className = 'tetris-upcoming';
         this.contextUpcoming = this.canvasUpcoming.getContext('2d');
+        this.canvasContainer.appendChild(this.canvasUpcoming);
+
+        this.time = document.createElement('div');
+        this.time.classList.add('game-stats', 'time');
+        container.appendChild(this.time);
 
         this.isPaused = true;
 
@@ -25,28 +49,32 @@ class GameInfo {
         this.keys = {
             down: {
                 keys: [40, 83],
-                action: () => this.player.drop()
+                action: () => {
+                    this.player.drop();
+                    this.player.score++;
+                    this.player.game.updateScore(false);
+                },
             },
             left: {
                 keys: [37, 65],
-                action: () => this.player.move(-1)
+                action: () => this.player.move(-1),
             },
             right: {
                 keys: [39, 68],
-                action: () => this.player.move(1)
+                action: () => this.player.move(1),
             },
             rotateLeft: {
                 keys: [81],
-                action: () => this.player.rotate(-1)
+                action: () => this.player.rotate(-1),
             },
             rotateRight: {
                 keys: [69],
-                action: () => this.player.rotate(1)
+                action: () => this.player.rotate(1),
             },
             holdTile: {
                 keys: [38, 87],
-                action: () => this.player.hold()
-            }
+                action: () => this.player.hold(),
+            },
         };
 
         this.prevUpdateScore = 0;
@@ -65,6 +93,16 @@ class GameInfo {
         modern -> rounded corners
         snake -> all tiles are connected
          */
-        this.theme = 'default';
+        this.theme = new DefaultTheme();
+    }
+
+    updateScore(animate) {
+        this.score.innerText = this.lastScore;
+        if (animate) {
+            this.score.classList.add('update');
+            setTimeout(() => {
+                this.score.classList.remove('update');
+            }, 1000);
+        }
     }
 }
